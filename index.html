@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="fr" class="pending">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EKE-COUTURE | Le jour s'est levé</title>
+<meta name="description" content="EKE-COUTURE, prêt-à-porter de luxe homme et femme. La coupe, les finitions main, l'audace d'être fier.">
+<meta name="theme-color" content="#14110F">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EKE-COUTURE | Le jour s'est levé">
+<meta property="og:description" content="Prêt-à-porter de luxe homme et femme. La coupe, les finitions main, l'audace d'être fier.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-112 -112 224 136'%3E%3Crect x='-112' y='-112' width='224' height='136' rx='16' fill='%2314110F'/%3E%3Cg fill='%23B9803F'%3E%3Crect x='-96' y='0' width='192' height='8'/%3E%3Crect x='-96' y='-64' width='16' height='64'/%3E%3Crect x='-64' y='-64' width='16' height='64'/%3E%3Crect x='80' y='-64' width='16' height='64'/%3E%3Crect x='48' y='-64' width='16' height='64'/%3E%3Cpolygon points='0,0 16,0 68,-96 52,-96'/%3E%3Cpolygon points='0,0 -16,0 -68,-96 -52,-96'/%3E%3Ccircle cx='0' cy='-56' r='20'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+:root{
+  --ink:#14110F; --ink-2:#1b1714; --ink-3:#241f1b;
+  --ivory:#F4EEE3; --sand:#D9C7A8; --copper:#B9803F;
+  --line:rgba(244,238,227,.14); --mute:rgba(244,238,227,.62);
+  --pad:clamp(20px,4vw,64px);
+  --ease:cubic-bezier(.22,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--ink);color:var(--ivory);font-family:Jost,'Century Gothic',Futura,sans-serif;font-weight:300;font-size:17px;line-height:1.47;letter-spacing:-.012em;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 var(--pad)}
+.eyebrow{font-size:12px;font-weight:400;letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+h1,h2,h3{font-weight:300;letter-spacing:.02em;line-height:1.02}
+h2{font-size:clamp(2rem,5vw,4.2rem);text-transform:uppercase;letter-spacing:.05em;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:background .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease)}
+.pill.solid{background:var(--copper);color:var(--ink)}
+.pill.solid:hover{background:#cb9150}
+.pill:active{scale:.95}
+.pill.ghost{border:1px solid var(--line);color:var(--ivory)}
+.pill.ghost:hover{border-color:var(--copper);color:var(--copper)}
+.rule{width:64px;height:1px;background:var(--copper);margin:26px 0}
+
+.prog{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--copper);transform:scaleX(0);transform-origin:0 50%;z-index:70}
+
+/* scène 3D fixe */
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 1s}
+.dawn{position:fixed;left:50%;bottom:-25vh;width:130vw;height:80vh;transform:translateX(-50%);transition:opacity .6s linear;z-index:0;pointer-events:none;background:radial-gradient(closest-side,rgba(185,128,63,.5),rgba(185,128,63,.12) 55%,transparent 75%);opacity:0;visibility:hidden;will-change:opacity;contain:strict}
+html.gl #gl{opacity:1}
+body.in-story #gl,body.in-story .dawn{visibility:visible}
+body:not(.in-story) #gl,body:not(.in-story) .dawn{visibility:hidden}
+html:not(.gl) .dawn{opacity:.55}
+html.nogl.pending .dawn{opacity:.55}
+
+/* header */
+header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;height:56px;padding:0 var(--pad);transition:background .5s var(--ease)}
+header.solid{background:rgba(20,17,15,.94)}
+.brand{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:400;letter-spacing:.3em}
+.brand svg{width:38px;height:auto;color:var(--copper)}
+nav ul{display:flex;gap:34px;list-style:none}
+nav a{font-size:12px;font-weight:400;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);transition:color .3s}
+nav a:hover{color:var(--ivory)}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{padding:7px 12px;border-radius:999px;font-size:11px;font-weight:400;letter-spacing:.16em;color:var(--mute);transition:all .3s}
+.lang button[aria-pressed="true"]{background:var(--ivory);color:var(--ink)}
+.menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:50%}
+.menu-btn span{display:block;width:16px;height:1px;background:var(--ivory);margin:5px auto}
+@media(max-width:860px){
+  nav{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+  nav.open{opacity:1;pointer-events:auto}
+  nav ul{flex-direction:column;align-items:center;gap:28px}
+  nav a{font-size:20px;color:var(--ivory)}
+  .menu-btn{display:block;position:relative;z-index:60}
+  .hdr-cta{display:none}
+  .hdr-right{position:relative;z-index:60}
+}
+
+/* histoire (chapitres sur la scène 3D) */
+#story{position:relative;z-index:1}
+.chap{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:90px var(--pad)}
+.chap .in{max-width:min(520px,100%)}
+.chap.r{justify-content:flex-end}
+.chap.c{justify-content:center;align-items:flex-end;padding-bottom:12vh;text-align:center}
+.chap.c .in{display:flex;flex-direction:column;align-items:center}
+.chap h2{font-size:clamp(3.2rem,9.5vw,9rem);text-transform:none;letter-spacing:-.01em;line-height:.95;margin:14px 0 0}
+.chap .sub{font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--mute);max-width:24em}
+.chap .num{font-size:12px;letter-spacing:.36em;color:var(--copper);font-weight:400}
+.chap .hint{margin-top:26px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--sand)}
+.hero{flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding-bottom:7vh}
+.hero-ui{display:flex;flex-direction:column;align-items:center}
+.pending .hero-ui,.pending .scroll-cue{opacity:0}
+.hero-name{width:min(420px,62vw);height:auto;fill:var(--ivory)}
+.hero h1{margin-top:20px;font-size:clamp(.95rem,2vw,1.35rem);letter-spacing:.46em;text-transform:uppercase;font-weight:300;color:var(--mute)}
+.hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;justify-content:center}
+.scroll-cue{margin-top:34px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-cue i{display:block;width:1px;height:34px;background:linear-gradient(var(--copper),transparent)}
+.fb{display:none;width:min(520px,76vw);height:auto;color:var(--copper);margin-bottom:auto;margin-top:12vh}
+html.nogl .fb{display:block}
+html.nogl #gl{display:none}
+#manifesto{font-size:clamp(1.4rem,3vw,2.6rem);line-height:1.2;font-weight:300;max-width:12em}
+#manifesto .w{opacity:.18}
+.eke-letters{position:absolute;right:var(--pad);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2vh;padding-left:22px;border-left:1px solid var(--copper);font-size:clamp(3rem,9vw,8rem);font-weight:300;line-height:1;color:var(--copper);opacity:0}
+@media(max-width:860px){
+  .chap{align-items:flex-end;padding-bottom:11vh}
+  .chap.hero{align-items:center}
+  .chap .in{background:linear-gradient(transparent,rgba(20,17,15,.55) 30%);padding-top:30px;margin:0 -8px;padding-inline:8px}
+  .eke-letters{top:34%;font-size:clamp(2.4rem,12vw,4rem)}
+}
+html.nogl .chap{min-height:auto;padding:100px var(--pad)}
+html.nogl .chap.hero{min-height:100svh}
+
+/* sections pleines */
+.solid-sec{position:relative;z-index:2;background:var(--ink)}
+.band{padding:clamp(72px,10vw,120px) 0}
+.duo{display:flex;gap:12px;height:min(86vh,820px);margin-top:clamp(36px,5vw,64px)}
+.panel{position:relative;flex:1;border-radius:18px;overflow:hidden;display:flex;align-items:flex-end;padding:clamp(22px,3vw,44px);isolation:isolate}
+.panel.h{background:linear-gradient(165deg,#2a231d 0%,#14110F 70%)}
+.panel.f{background:linear-gradient(165deg,#e8dcc5 0%,#c9b48f 100%);color:var(--ink)}
+.panel svg.pt{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.panel .tag{position:absolute;top:22px;left:26px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;opacity:.7}
+.panel h3{font-size:clamp(2.4rem,6vw,5rem);text-transform:uppercase;letter-spacing:.04em}
+.panel p{margin:10px 0 22px;max-width:22em;opacity:.78}
+.panel.f .pill.ghost{border-color:rgba(20,17,15,.3);color:var(--ink)}
+.panel.f:hover .pill.ghost{border-color:var(--ink);background:var(--ink);color:var(--ivory)}
+.panel.h:hover .pill.ghost{border-color:var(--copper);color:var(--copper)}
+@media(max-width:860px){.duo{flex-direction:column;height:auto}.panel{min-height:62vh}}
+
+.cat-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.filters button{padding:11px 22px;border:1px solid var(--line);border-radius:999px;font-size:12px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);transition:all .35s var(--ease)}
+.filters button[aria-pressed="true"]{background:var(--ivory);color:var(--ink);border-color:var(--ivory)}
+.filters button:hover{color:var(--ivory);border-color:var(--copper)}
+.filters button[aria-pressed="true"]:hover{color:var(--ink)}
+.note{margin-top:18px;font-size:13px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+@media(max-width:1060px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+.card{text-align:left;display:block;width:100%}
+.card[hidden]{display:none}
+.shot{position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--ink-3);border:1px solid var(--line);transition:transform .7s var(--ease),border-color .4s}
+.card:hover .card.f .shot,.shot.f{background:linear-gradient(160deg,#e3d6bd,#bfa87f)}
+.card.h .shot,.shot.h{background:linear-gradient(160deg,#2c251f,#17130f)}
+.shot svg{position:absolute;left:50%;top:46%;width:54%;transform:translate(-50%,-50%);opacity:.55}
+.card.f .shot svg,.shot.f svg{color:var(--ink)}
+.card.h .shot svg,.shot.h svg{color:var(--copper)}
+.shot span{position:absolute;left:14px;bottom:12px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+.card.f .shot span,.shot.f span{color:var(--ink)}
+.card:hover .shot{transform:translateY(-6px);border-color:var(--copper)}
+.card h4{margin-top:14px;font-size:17px;font-weight:400;letter-spacing:.06em;text-transform:uppercase}
+.card small{display:block;color:var(--mute);font-size:13px;letter-spacing:.08em}
+
+dialog{position:fixed;border:1px solid var(--line);border-radius:20px;background:var(--ink-2);color:var(--ivory);width:min(880px,92vw);padding:0;margin:auto;overflow:hidden}
+dialog::backdrop{background:rgba(8,6,5,.82)}
+.dlg{display:grid;grid-template-columns:1fr 1fr}
+.dlg .shot{border-radius:0;border:0;aspect-ratio:auto;min-height:360px}
+.dlg-body{padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;gap:14px;justify-content:center}
+.dlg-body h3{font-size:2rem;text-transform:uppercase}
+.dlg-body p{color:var(--mute)}
+.dlg-body ul{list-style:none;color:var(--mute);font-size:15px;border-top:1px solid var(--line)}
+.dlg-body li{padding:10px 0;border-bottom:1px solid var(--line)}
+dialog .close{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:rgba(20,17,15,.6)}
+@media(max-width:700px){.dlg{grid-template-columns:1fr}.dlg .shot{min-height:220px}}
+
+/* tuiles claires (alternance clair / sombre, comme Apple) */
+.light{background:#F4EEE3;color:var(--ink)}
+.light .eyebrow{color:rgba(20,17,15,.6)}
+.light .lead{color:var(--ink)}
+.light ul{border-color:rgba(20,17,15,.14)}
+.light li{color:rgba(20,17,15,.66);border-color:rgba(20,17,15,.14)}
+.light li b,.light li a{color:var(--ink)}
+.light .field label,.light .field legend{color:rgba(20,17,15,.62)}
+.light .field input,.light .field select,.light .field textarea{background:#fff;border-color:rgba(20,17,15,.18);color:var(--ink)}
+.light .chan label{border-color:rgba(20,17,15,.2);color:rgba(20,17,15,.66)}
+.light .chan label:has(input:checked){border-color:var(--copper);color:var(--ink)}
+.light .status{color:rgba(20,17,15,.66)}
+.light .status.ok{color:#7a5424}
+.light .panel.f{background:linear-gradient(165deg,#e2d4b8,#c9b48f)}
+
+.frise{height:64px;background:var(--ink-2);overflow:hidden}
+.frise svg{display:block;width:calc(100% + 80px);height:100%;animation:slide 6s linear infinite;will-change:transform}
+.frise.off svg{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-80px)}}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px);margin-top:36px;align-items:start}
+.lead{font-size:clamp(1.2rem,2.2vw,1.7rem);max-width:22em}
+.contact ul{list-style:none;border-top:1px solid var(--line);margin-top:34px}
+.contact li{display:flex;justify-content:space-between;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);color:var(--mute)}
+.contact li b{font-weight:400;color:var(--ivory);letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.contact li a{color:var(--ivory);border-bottom:1px solid var(--copper)}
+form{display:grid;gap:16px}
+.field{display:grid;gap:8px}
+.field label,.field legend{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+.field input,.field select,.field textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;transition:border-color .3s}
+.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--copper) 50%),linear-gradient(135deg,var(--copper) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--copper)}
+.field.err input{border-color:#d46a5a}
+.chan{display:flex;gap:10px;border:0;padding:0}
+.chan label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:10px 18px;cursor:pointer;color:var(--mute);letter-spacing:.14em;font-size:12px}
+.chan label[hidden]{display:none}
+.chan input{accent-color:#B9803F}
+.chan label:has(input:checked){border-color:var(--copper);color:var(--ivory)}
+.status{min-height:1.4em;font-size:14px;color:var(--mute)}
+.status.ok{color:var(--sand)}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
+footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:var(--mute);font-size:13px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot svg{width:150px;color:var(--copper)}
+.foot svg .name{fill:var(--ivory)}
+
+.cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--copper);pointer-events:none;z-index:100;opacity:0;transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),background .3s}
+.cursor.big{width:54px;height:54px;margin:-27px 0 0 -27px;background:rgba(185,128,63,.22);border:1px solid var(--copper)}
+@media(hover:none){.cursor{display:none}}
+@media(prefers-reduced-motion:reduce){.frise svg{animation:none}*{transition-duration:.01ms!important}#manifesto .w{opacity:1}}
+/* contacts sur tuile claire : plus spécifique que les règles sombres */
+.light.contact ul{border-color:rgba(20,17,15,.14)}
+.light.contact li{color:rgba(20,17,15,.66);border-color:rgba(20,17,15,.14)}
+.light.contact li b,.light.contact li a{color:var(--ink)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="em">
+      <rect x="-96" y="0" width="192" height="8"/>
+      <rect x="-96" y="-64" width="8" height="64"/><rect x="-80" y="-40" width="8" height="40"/><rect x="-64" y="-64" width="8" height="64"/>
+      <rect x="88" y="-64" width="8" height="64"/><rect x="72" y="-40" width="8" height="40"/><rect x="56" y="-64" width="8" height="64"/>
+      <polygon points="0,0 8,0 64,-96 56,-96"/><polygon points="0,0 -8,0 -64,-96 -56,-96"/>
+      <circle cx="0" cy="-56" r="24"/>
+    </g>
+    <pattern id="pd" width="80" height="80" patternUnits="userSpaceOnUse">
+      <g fill="#B9803F" opacity=".16"><g transform="translate(40,34) scale(.25)"><use href="#em"/></g><g transform="translate(0,74) scale(.25)"><use href="#em"/></g><g transform="translate(80,74) scale(.25)"><use href="#em"/></g></g>
+    </pattern>
+    <pattern id="pl" width="80" height="80" patternUnits="userSpaceOnUse">
+      <g fill="#14110F" opacity=".12"><g transform="translate(40,34) scale(.25)"><use href="#em"/></g><g transform="translate(0,74) scale(.25)"><use href="#em"/></g><g transform="translate(80,74) scale(.25)"><use href="#em"/></g></g>
+    </pattern>
+    <pattern id="pf" width="80" height="64" patternUnits="userSpaceOnUse">
+      <g fill="#B9803F"><g transform="translate(40,44) scale(.3)"><use href="#em"/></g></g>
+      <rect x="0" y="44" width="80" height="2" fill="#B9803F" opacity=".7"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="dawn" aria-hidden="true"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="prog" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+
+<header id="hdr">
+  <a class="brand" href="#top" aria-label="EKE-COUTURE">
+    <svg viewBox="-100 -100 200 112" aria-hidden="true" fill="currentColor"><use href="#em"/></svg>
+    <span>EKE</span>
+  </a>
+  <nav id="nav" data-ia="aria-label:nav.aria">
+    <ul>
+      <li><a href="#marque" data-i="nav.brand"></a></li>
+      <li><a href="#duo" data-i="nav.duo"></a></li>
+      <li><a href="#catalogue" data-i="nav.cat"></a></li>
+      <li><a href="#contact" data-i="nav.contact"></a></li>
+    </ul>
+  </nav>
+  <div class="hdr-right">
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button data-lang="fr" aria-pressed="true">FR</button>
+      <button data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="pill solid hdr-cta" href="#contact" data-hover data-i="cta.fit"></a>
+    <button class="menu-btn" id="menuBtn" data-ia="aria-label:menu.open" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+<div id="story">
+  <section class="chap hero">
+    <svg class="fb" viewBox="0 0 256 190" role="img" aria-label="EKE-COUTURE"><g transform="translate(128,120)" fill="currentColor"><use href="#em"/></g></svg>
+    <div class="hero-ui">
+      <svg class="hero-name" viewBox="24 150 208 34" role="img" aria-label="EKE-COUTURE"><path d="M33.03 177H40.8V175.24H33.03ZM33.03 163.36H40.8V161.6H33.03ZM33.03 169.52H40.36V167.76H33.03ZM32 161.6V177H33.87V161.6ZM50.04 161.6V177H51.91V161.6ZM57.96 161.6 51.34 168.86 58.29 177H60.6L53.6 168.82L60.27 161.6ZM69.45 177H77.21V175.24H69.45ZM69.45 163.36H77.21V161.6H69.45ZM69.45 169.52H76.77V167.76H69.45ZM68.41 161.6V177H70.28V161.6ZM84.8 172.6H89.2V170.95H84.8ZM98.11 169.3Q98.11 167.5 98.92 166.14Q99.72 164.79 101.02 164.02Q102.31 163.25 103.83 163.25Q104.93 163.25 105.85 163.54Q106.76 163.82 107.51 164.34Q108.25 164.86 108.78 165.54V163.07Q107.81 162.22 106.67 161.8Q105.53 161.38 103.83 161.38Q102.23 161.38 100.83 161.96Q99.43 162.55 98.38 163.61Q97.32 164.68 96.73 166.13Q96.13 167.58 96.13 169.3Q96.13 171.02 96.73 172.47Q97.32 173.92 98.38 174.99Q99.43 176.05 100.83 176.64Q102.23 177.22 103.83 177.22Q105.53 177.22 106.67 176.8Q107.81 176.38 108.78 175.53V173.06Q108.25 173.74 107.51 174.26Q106.76 174.78 105.85 175.06Q104.93 175.35 103.83 175.35Q102.31 175.35 101.02 174.58Q99.72 173.81 98.92 172.45Q98.11 171.08 98.11 169.3ZM119.12 169.3Q119.12 167.56 119.88 166.2Q120.64 164.83 121.96 164.04Q123.28 163.25 124.95 163.25Q126.65 163.25 127.96 164.04Q129.26 164.83 130.02 166.2Q130.78 167.56 130.78 169.3Q130.78 171.04 130.02 172.4Q129.26 173.77 127.96 174.56Q126.65 175.35 124.95 175.35Q123.28 175.35 121.96 174.56Q120.64 173.77 119.88 172.4Q119.12 171.04 119.12 169.3ZM117.14 169.3Q117.14 170.97 117.73 172.42Q118.31 173.88 119.36 174.94Q120.42 176.01 121.85 176.62Q123.28 177.22 124.95 177.22Q126.65 177.22 128.07 176.62Q129.48 176.01 130.54 174.94Q131.6 173.88 132.18 172.42Q132.76 170.97 132.76 169.3Q132.76 167.61 132.18 166.16Q131.6 164.72 130.54 163.66Q129.48 162.59 128.07 161.99Q126.65 161.38 124.95 161.38Q123.28 161.38 121.85 161.99Q120.42 162.59 119.36 163.66Q118.31 164.72 117.73 166.16Q117.14 167.61 117.14 169.3ZM141.23 161.6V171.94Q141.23 173.08 141.6 174.05Q141.96 175.02 142.65 175.72Q143.35 176.43 144.31 176.82Q145.28 177.22 146.47 177.22Q147.66 177.22 148.63 176.82Q149.59 176.43 150.29 175.72Q150.98 175.02 151.34 174.05Q151.71 173.08 151.71 171.94V161.6H149.84V171.94Q149.84 173.52 148.98 174.49Q148.12 175.46 146.47 175.46Q144.82 175.46 143.96 174.49Q143.1 173.52 143.1 171.94V161.6ZM159.52 163.36H163.48V177H165.35V163.36H169.31V161.6H159.52ZM177.12 161.6V171.94Q177.12 173.08 177.48 174.05Q177.84 175.02 178.54 175.72Q179.23 176.43 180.2 176.82Q181.16 177.22 182.35 177.22Q183.54 177.22 184.51 176.82Q185.48 176.43 186.17 175.72Q186.86 175.02 187.23 174.05Q187.59 173.08 187.59 171.94V161.6H185.72V171.94Q185.72 173.52 184.86 174.49Q184 175.46 182.35 175.46Q180.7 175.46 179.84 174.49Q178.99 173.52 178.99 171.94V161.6ZM199.69 169.41 204.97 177H207.28L201.78 169.41ZM196.94 161.6V177H198.81V161.6ZM197.97 163.25H201.12Q202.11 163.25 202.87 163.6Q203.63 163.95 204.06 164.61Q204.49 165.27 204.49 166.22Q204.49 167.17 204.06 167.83Q203.63 168.49 202.87 168.84Q202.11 169.19 201.12 169.19H197.97V170.84H201.12Q202.62 170.84 203.79 170.28Q204.97 169.72 205.66 168.67Q206.36 167.63 206.36 166.22Q206.36 164.79 205.66 163.76Q204.97 162.72 203.79 162.16Q202.62 161.6 201.12 161.6H197.97ZM216.23 177H224V175.24H216.23ZM216.23 163.36H224V161.6H216.23ZM216.23 169.52H223.56V167.76H216.23ZM215.2 161.6V177H217.07V161.6Z"/></svg>
+      <h1 data-i="hero.tag"></h1>
+      <div class="hero-cta">
+        <a class="pill solid" href="#catalogue" data-hover data-i="hero.cat"></a>
+        <a class="pill ghost" href="#marque" data-hover data-i="hero.house"></a>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><span data-i="scroll"></span><i></i></div>
+  </section>
+
+  <section class="chap" id="marque">
+    <div class="in">
+      <p class="num" data-i="man.eyebrow"></p>
+      <div class="rule"></div>
+      <p id="manifesto"></p>
+    </div>
+  </section>
+
+  <section class="chap" id="coupe">
+    <div class="in rv">
+      <p class="num">I</p>
+      <h2 data-i="c1.t"></h2>
+      <div class="rule"></div>
+      <p class="sub" data-i="c1.p"></p>
+      <p class="hint" data-i="turn"></p>
+    </div>
+  </section>
+
+  <section class="chap r" id="main">
+    <div class="in rv">
+      <p class="num">II</p>
+      <h2 data-i="c2.t"></h2>
+      <div class="rule"></div>
+      <p class="sub" data-i="c2.p"></p>
+    </div>
+  </section>
+
+  <section class="chap c" id="fierte">
+    <div class="in rv">
+      <p class="num">III</p>
+      <h2 data-i="c3.t"></h2>
+      <div class="rule"></div>
+      <p class="sub" data-i="c3.p"></p>
+      <a class="pill ghost" href="#duo" style="margin-top:34px" data-hover data-i="ch.cta"></a>
+    </div>
+  </section>
+</div>
+
+<section class="solid-sec band light" id="duo">
+  <div class="wrap">
+    <p class="eyebrow" data-i="duo.eyebrow"></p>
+    <h2 data-i="duo.title"></h2>
+    <div class="duo">
+      <a class="panel h reveal-mask" href="#catalogue" data-filter-go="homme" data-hover>
+        <svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pd)"/></svg>
+        <span class="tag" data-i="soon"></span>
+        <div><h3 data-i="f.men"></h3><p data-i="men.p"></p><span class="pill ghost" data-i="see"></span></div>
+      </a>
+      <a class="panel f reveal-mask" href="#catalogue" data-filter-go="femme" data-hover>
+        <svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pl)"/></svg>
+        <span class="tag" data-i="soon"></span>
+        <div><h3 data-i="f.women"></h3><p data-i="women.p"></p><span class="pill ghost" data-i="see"></span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="solid-sec frise" aria-hidden="true"><svg preserveAspectRatio="none"><rect width="100%" height="100%" fill="url(#pf)"/></svg></div>
+
+<section class="solid-sec band" id="catalogue">
+  <div class="wrap">
+    <div class="cat-head">
+      <div><p class="eyebrow" data-i="cat.eyebrow"></p><h2 data-i="cat.title"></h2></div>
+      <div class="filters" role="group" data-ia="aria-label:cat.filter">
+        <button aria-pressed="true" data-f="all" data-i="f.all"></button>
+        <button aria-pressed="false" data-f="homme" data-i="f.men"></button>
+        <button aria-pressed="false" data-f="femme" data-i="f.women"></button>
+      </div>
+    </div>
+    <p class="note" data-i="cat.note"></p>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="solid-sec band contact light" id="contact">
+  <div class="wrap">
+    <p class="eyebrow" data-i="contact.eyebrow"></p>
+    <h2 data-i="contact.title"></h2>
+    <div class="contact-grid">
+      <div>
+        <p class="lead" data-i="contact.lead"></p>
+        <ul id="contactList"></ul>
+      </div>
+      <form id="fit" novalidate>
+        <div class="field" id="fName"><label for="name" data-i="form.name"></label><input id="name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="piece" data-i="form.piece"></label><select id="piece" name="piece"></select></div>
+        <div class="field"><label for="msg" data-i="form.msg"></label><textarea id="msg" name="msg" data-ip="form.msg.ph"></textarea></div>
+        <fieldset class="field chan"><legend data-i="form.via"></legend>
+          <label><input type="radio" name="via" value="wa"> WhatsApp</label>
+          <label><input type="radio" name="via" value="mail"> <span data-i="lbl.email"></span></label>
+        </fieldset>
+        <button class="pill solid" type="submit" style="justify-self:start" data-hover data-i="form.send"></button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <svg viewBox="0 0 256 190" role="img" aria-label="EKE-COUTURE"><g transform="translate(128,120)" fill="currentColor"><use href="#em"/></g><path class="name" d="M33.03 177H40.8V175.24H33.03ZM33.03 163.36H40.8V161.6H33.03ZM33.03 169.52H40.36V167.76H33.03ZM32 161.6V177H33.87V161.6ZM50.04 161.6V177H51.91V161.6ZM57.96 161.6 51.34 168.86 58.29 177H60.6L53.6 168.82L60.27 161.6ZM69.45 177H77.21V175.24H69.45ZM69.45 163.36H77.21V161.6H69.45ZM69.45 169.52H76.77V167.76H69.45ZM68.41 161.6V177H70.28V161.6ZM84.8 172.6H89.2V170.95H84.8ZM98.11 169.3Q98.11 167.5 98.92 166.14Q99.72 164.79 101.02 164.02Q102.31 163.25 103.83 163.25Q104.93 163.25 105.85 163.54Q106.76 163.82 107.51 164.34Q108.25 164.86 108.78 165.54V163.07Q107.81 162.22 106.67 161.8Q105.53 161.38 103.83 161.38Q102.23 161.38 100.83 161.96Q99.43 162.55 98.38 163.61Q97.32 164.68 96.73 166.13Q96.13 167.58 96.13 169.3Q96.13 171.02 96.73 172.47Q97.32 173.92 98.38 174.99Q99.43 176.05 100.83 176.64Q102.23 177.22 103.83 177.22Q105.53 177.22 106.67 176.8Q107.81 176.38 108.78 175.53V173.06Q108.25 173.74 107.51 174.26Q106.76 174.78 105.85 175.06Q104.93 175.35 103.83 175.35Q102.31 175.35 101.02 174.58Q99.72 173.81 98.92 172.45Q98.11 171.08 98.11 169.3ZM119.12 169.3Q119.12 167.56 119.88 166.2Q120.64 164.83 121.96 164.04Q123.28 163.25 124.95 163.25Q126.65 163.25 127.96 164.04Q129.26 164.83 130.02 166.2Q130.78 167.56 130.78 169.3Q130.78 171.04 130.02 172.4Q129.26 173.77 127.96 174.56Q126.65 175.35 124.95 175.35Q123.28 175.35 121.96 174.56Q120.64 173.77 119.88 172.4Q119.12 171.04 119.12 169.3ZM117.14 169.3Q117.14 170.97 117.73 172.42Q118.31 173.88 119.36 174.94Q120.42 176.01 121.85 176.62Q123.28 177.22 124.95 177.22Q126.65 177.22 128.07 176.62Q129.48 176.01 130.54 174.94Q131.6 173.88 132.18 172.42Q132.76 170.97 132.76 169.3Q132.76 167.61 132.18 166.16Q131.6 164.72 130.54 163.66Q129.48 162.59 128.07 161.99Q126.65 161.38 124.95 161.38Q123.28 161.38 121.85 161.99Q120.42 162.59 119.36 163.66Q118.31 164.72 117.73 166.16Q117.14 167.61 117.14 169.3ZM141.23 161.6V171.94Q141.23 173.08 141.6 174.05Q141.96 175.02 142.65 175.72Q143.35 176.43 144.31 176.82Q145.28 177.22 146.47 177.22Q147.66 177.22 148.63 176.82Q149.59 176.43 150.29 175.72Q150.98 175.02 151.34 174.05Q151.71 173.08 151.71 171.94V161.6H149.84V171.94Q149.84 173.52 148.98 174.49Q148.12 175.46 146.47 175.46Q144.82 175.46 143.96 174.49Q143.1 173.52 143.1 171.94V161.6ZM159.52 163.36H163.48V177H165.35V163.36H169.31V161.6H159.52ZM177.12 161.6V171.94Q177.12 173.08 177.48 174.05Q177.84 175.02 178.54 175.72Q179.23 176.43 180.2 176.82Q181.16 177.22 182.35 177.22Q183.54 177.22 184.51 176.82Q185.48 176.43 186.17 175.72Q186.86 175.02 187.23 174.05Q187.59 173.08 187.59 171.94V161.6H185.72V171.94Q185.72 173.52 184.86 174.49Q184 175.46 182.35 175.46Q180.7 175.46 179.84 174.49Q178.99 173.52 178.99 171.94V161.6ZM199.69 169.41 204.97 177H207.28L201.78 169.41ZM196.94 161.6V177H198.81V161.6ZM197.97 163.25H201.12Q202.11 163.25 202.87 163.6Q203.63 163.95 204.06 164.61Q204.49 165.27 204.49 166.22Q204.49 167.17 204.06 167.83Q203.63 168.49 202.87 168.84Q202.11 169.19 201.12 169.19H197.97V170.84H201.12Q202.62 170.84 203.79 170.28Q204.97 169.72 205.66 168.67Q206.36 167.63 206.36 166.22Q206.36 164.79 205.66 163.76Q204.97 162.72 203.79 162.16Q202.62 161.6 201.12 161.6H197.97ZM216.23 177H224V175.24H216.23ZM216.23 163.36H224V161.6H216.23ZM216.23 169.52H223.56V167.76H216.23ZM215.2 161.6V177H217.07V161.6Z"/></svg>
+    <span data-i="foot.rights"></span>
+  </div>
+</footer>
+
+<dialog id="dlg">
+  <button class="close" id="dlgClose" data-ia="aria-label:close">✕</button>
+  <div class="dlg">
+    <div class="shot" id="dlgShot"><svg viewBox="-100 -100 200 112" fill="currentColor" aria-hidden="true"><use href="#em"/></svg><span data-i="soon"></span></div>
+    <div class="dlg-body">
+      <p class="eyebrow" id="dlgCat"></p>
+      <h3 id="dlgName"></h3>
+      <p id="dlgText"></p>
+      <ul><li data-i="dlg.l1"></li><li data-i="dlg.l2"></li><li data-i="dlg.l3"></li></ul>
+      <a class="pill solid" href="#contact" id="dlgCta" style="align-self:flex-start;margin-top:8px" data-i="dlg.cta"></a>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.min.js"></script>
+<script>
+(function(){
+  /* ===== COORDONNÉES DE LA MARQUE =====
+     whatsapp : numéro international, chiffres seulement
+     phone    : numéro affiché
+     email    : vide pour l'instant (pas encore de boîte mail)
+     atelier  : vide pour l'instant
+     instagram: vide pour l'instant (compte à créer) ; ex. "https://instagram.com/xxx" */
+  var CONFIG = { whatsapp:'22897297725', phone:'+228 97 29 77 25', email:'', atelier:'', instagram:'' };
+
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = !!window.gsap && !!window.ScrollTrigger;
+  var $ = function(s,r){ return (r||document).querySelector(s); };
+  var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  var root = document.documentElement;
+  var mobile = function(){ return innerWidth/innerHeight < .9; };
+
+  /* état partagé avec la scène 3D */
+  var S = { rotX:0, rotY:0, rotZ:0, zoom:1, x:0, y:0, glow:.6 };
+  window.EKE = { S:S, reduce:reduce, ready:false, glReady:glReady };
+
+  var DICT = {
+    fr:{
+      'nav.aria':'Navigation principale','menu.open':'Ouvrir le menu','close':'Fermer',
+      'nav.brand':'La marque','nav.duo':'Homme & Femme','nav.cat':'Catalogue','nav.contact':'Contact','cta.fit':'Essayage',
+      'hero.tag':"Le jour s'est levé",'hero.cat':'Voir le catalogue','hero.house':'La maison','scroll':'Défiler',
+      'man.eyebrow':'Le nom',
+      'man.text':"EKE est d'abord un nom de famille. Il veut dire : le jour s'est levé. Nous en avons fait une maison de couture.",
+      'c1.t':'La coupe.','c1.p':"Une ligne construite sur le corps, pas sur le cintre. C'est elle qui fait la signature d'EKE.",
+      'turn':"Tournez l'emblème de 90° : vous lisez E, K, E.",
+      'c2.t':'Fait main.','c2.p':"Ourlets, boutonnières, doublures : ce qu'on ne voit pas d'abord, et qu'on remarque ensuite.",
+      'c3.t':'Fier.','c3.p':"Un luxe discret, pensé pour la diaspora africaine. L'audace est dans la forme, jamais dans le bruit.",
+      'ch.cta':'Découvrir les collections',
+      'duo.eyebrow':'Les collections','duo.title':'Homme & Femme','soon':'Photo à venir',
+      'men.p':'Vestes structurées, costumes, chemises : la coupe avant tout.','women.p':'Robes, manteaux, ensembles : la silhouette, sans compromis.','see':'Voir la sélection',
+      'cat.eyebrow':'Catalogue','cat.title':'La sélection','cat.filter':'Filtrer le catalogue',
+      'f.all':'Tout','f.men':'Homme','f.women':'Femme',
+      'cat.note':'Exemples de présentation : les noms, les pièces et les visuels sont provisoires, en attente des vraies photos.',
+      'dlg.l1':'Coupe sur mesure','dlg.l2':'Finitions faites à la main','dlg.l3':'Essayage sur rendez-vous','dlg.cta':'Demander un essayage',
+      'contact.eyebrow':'Contact','contact.title':'Prendre rendez-vous',
+      'contact.lead':'Un essayage, une pièce sur mesure, une question sur une finition : écrivez-nous, nous répondons personnellement.',
+      'lbl.email':'E-mail','lbl.atelier':'Atelier','lbl.phone':'Téléphone','soonIg':'Bientôt',
+      'form.name':'Votre nom','form.piece':'Pièce souhaitée','form.msg':'Message','form.msg.ph':'Taille, occasion, date souhaitée…','form.via':'Répondre par','form.send':'Envoyer la demande',
+      'form.other':'Autre / je ne sais pas encore',
+      's.name':'Merci de renseigner votre nom.','s.none':"Les coordonnées de la marque ne sont pas encore renseignées : le formulaire ne peut pas partir pour l'instant.",
+      's.via':'Choisissez un moyen de réponse.','s.ok':"Votre application s'ouvre avec le message prêt à envoyer.",
+      'msg.hello':'Bonjour EKE-COUTURE, je suis','msg.piece':'Pièce souhaitée','msg.sub':"Demande d'essayage",
+      'foot.rights':'© 2026 EKE-COUTURE. Tous droits réservés.'
+    },
+    en:{
+      'nav.aria':'Main navigation','menu.open':'Open menu','close':'Close',
+      'nav.brand':'The house','nav.duo':'Men & Women','nav.cat':'Catalogue','nav.contact':'Contact','cta.fit':'Fitting',
+      'hero.tag':'The day has risen','hero.cat':'View the catalogue','hero.house':'The house','scroll':'Scroll',
+      'man.eyebrow':'The name',
+      'man.text':'EKE is first of all a family name. It means: the day has risen. We turned it into a couture house.',
+      'c1.t':'The cut.','c1.p':"A line built on the body, not on the hanger. It is EKE's signature.",
+      'turn':'Turn the emblem 90°: you read E, K, E.',
+      'c2.t':'Hand-made.','c2.p':"Hems, buttonholes, linings: what you don't see first, and notice next.",
+      'c3.t':'Proud.','c3.p':'Quiet luxury, made for the African diaspora. The boldness is in the form, never in the noise.',
+      'ch.cta':'Discover the collections',
+      'duo.eyebrow':'The collections','duo.title':'Men & Women','soon':'Photo coming soon',
+      'men.p':'Structured jackets, suits, shirts: the cut above all.','women.p':'Dresses, coats, sets: the silhouette, without compromise.','see':'View the selection',
+      'cat.eyebrow':'Catalogue','cat.title':'The selection','cat.filter':'Filter the catalogue',
+      'f.all':'All','f.men':'Men','f.women':'Women',
+      'cat.note':'Sample presentation: names, pieces and visuals are placeholders until the real photos arrive.',
+      'dlg.l1':'Made-to-measure cut','dlg.l2':'Hand-finished details','dlg.l3':'Fitting by appointment','dlg.cta':'Request a fitting',
+      'contact.eyebrow':'Contact','contact.title':'Book an appointment',
+      'contact.lead':'A fitting, a made-to-measure piece, a question about a finish: write to us, we reply personally.',
+      'lbl.email':'Email','lbl.atelier':'Atelier','lbl.phone':'Phone','soonIg':'Soon',
+      'form.name':'Your name','form.piece':'Piece of interest','form.msg':'Message','form.msg.ph':'Size, occasion, preferred date…','form.via':'Reply by','form.send':'Send the request',
+      'form.other':'Other / not sure yet',
+      's.name':'Please enter your name.','s.none':"The brand's contact details are not set yet: the form cannot be sent for now.",
+      's.via':'Choose a way to reply.','s.ok':'Your app is opening with the message ready to send.',
+      'msg.hello':'Hello EKE-COUTURE, my name is','msg.piece':'Piece of interest','msg.sub':'Fitting request',
+      'foot.rights':'© 2026 EKE-COUTURE. All rights reserved.'
+    }
+  };
+  var items = [
+    {n:'Veste Aube', c:'homme', t:{fr:'Veste',en:'Jacket'}, d:{fr:'Une veste structurée, épaule nette, taille marquée.',en:'A structured jacket, clean shoulder, defined waist.'}},
+    {n:'Costume Horizon', c:'homme', t:{fr:'Costume',en:'Suit'}, d:{fr:'Deux pièces à la ligne droite, doublure finie à la main.',en:'A two-piece with a straight line, hand-finished lining.'}},
+    {n:'Chemise Midi', c:'homme', t:{fr:'Chemise',en:'Shirt'}, d:{fr:'Col travaillé, boutonnières cousues main.',en:'A worked collar, hand-sewn buttonholes.'}},
+    {n:'Pantalon Zénith', c:'homme', t:{fr:'Pantalon',en:'Trousers'}, d:{fr:'Tombé précis, taille haute, ourlet main.',en:'A precise drape, high waist, hand hem.'}},
+    {n:'Robe Lever', c:'femme', t:{fr:'Robe',en:'Dress'}, d:{fr:'Une robe qui suit la silhouette, coupe en biais.',en:'A dress that follows the silhouette, cut on the bias.'}},
+    {n:'Manteau Éclat', c:'femme', t:{fr:'Manteau',en:'Coat'}, d:{fr:'Manteau long, épaules structurées, doublure soie.',en:'A long coat, structured shoulders, silk lining.'}},
+    {n:'Ensemble Rayon', c:'femme', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Veste et jupe assorties, coupe nette.',en:'A matching jacket and skirt, a clean cut.'}},
+    {n:'Jupe Matin', c:'femme', t:{fr:'Jupe',en:'Skirt'}, d:{fr:'Jupe droite, ceinture montée à la main.',en:'A straight skirt, waistband set by hand.'}}
+  ];
+
+  var lang = 'fr', filter = 'all';
+  try{ var sv = localStorage.getItem('eke-lang'); if(sv==='fr'||sv==='en') lang = sv; else if((navigator.language||'').slice(0,2)==='en') lang='en'; }catch(e){}
+  function T(k){ return DICT[lang][k] || k; }
+  function catLabel(c){ return c==='homme' ? T('f.men') : T('f.women'); }
+
+  var manTween = null;
+  function buildManifesto(){
+    var p = $('#manifesto');
+    p.innerHTML = T('man.text').split(' ').map(function(w){ return '<span class="w">'+w+'</span>'; }).join(' ');
+    if(hasGsap && !reduce){
+      if(manTween){ manTween.scrollTrigger && manTween.scrollTrigger.kill(); manTween.kill(); }
+      manTween = gsap.to('#manifesto .w',{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:'#manifesto',start:'top 75%',end:'bottom 45%',scrub:true}});
+    } else { $$('#manifesto .w').forEach(function(w){ w.style.opacity=1; }); }
+  }
+  function renderGrid(){
+    $('#grid').innerHTML = items.map(function(it,i){
+      return '<button class="card '+(it.c==='homme'?'h':'f')+'" data-c="'+it.c+'" data-i="'+i+'" data-hover'+((filter!=='all'&&filter!==it.c)?' hidden':'')+'>' +
+        '<div class="shot"><svg viewBox="-100 -100 200 112" fill="currentColor" aria-hidden="true"><use href="#em"/></svg><span>'+T('soon')+'</span></div>' +
+        '<h4>'+it.n+'</h4><small>'+it.t[lang]+' · '+catLabel(it.c)+'</small></button>';
+    }).join('');
+  }
+  function renderPieces(){
+    var sel = $('#piece'), cur = sel.value;
+    sel.innerHTML = items.map(function(it,i){ return '<option value="'+i+'">'+it.n+'</option>'; }).join('') + '<option value="other">'+T('form.other')+'</option>';
+    if(cur) sel.value = cur;
+  }
+  function renderContact(){
+    var rows = [];
+    if(CONFIG.whatsapp) rows.push('<li><b>WhatsApp</b><a href="https://wa.me/'+CONFIG.whatsapp+'" target="_blank" rel="noopener">'+CONFIG.phone+'</a></li>');
+    if(CONFIG.phone) rows.push('<li><b>'+T('lbl.phone')+'</b><a href="tel:+'+(CONFIG.whatsapp||CONFIG.phone.replace(/\D/g,''))+'">'+CONFIG.phone+'</a></li>');
+    if(CONFIG.email) rows.push('<li><b>'+T('lbl.email')+'</b><a href="mailto:'+CONFIG.email+'">'+CONFIG.email+'</a></li>');
+    if(CONFIG.atelier) rows.push('<li><b>'+T('lbl.atelier')+'</b><span>'+CONFIG.atelier+'</span></li>');
+    rows.push('<li><b>Instagram</b>'+(CONFIG.instagram ? '<a href="'+CONFIG.instagram+'" target="_blank" rel="noopener">Instagram</a>' : '<span>'+T('soonIg')+'</span>')+'</li>');
+    $('#contactList').innerHTML = rows.join('');
+    var wa = $('input[value=wa]'), ml = $('input[value=mail]');
+    wa.parentElement.hidden = !CONFIG.whatsapp; ml.parentElement.hidden = !CONFIG.email;
+    wa.disabled = !CONFIG.whatsapp; ml.disabled = !CONFIG.email;
+    if(!$('input[name=via]:checked')){ if(CONFIG.whatsapp) wa.checked = true; else if(CONFIG.email) ml.checked = true; }
+  }
+  function applyLang(){
+    root.lang = lang;
+    $$('[data-i]').forEach(function(el){ if(!el.classList.contains('card')) el.textContent = T(el.getAttribute('data-i')); });
+    $$('[data-ip]').forEach(function(el){ el.placeholder = T(el.getAttribute('data-ip')); });
+    $$('[data-ia]').forEach(function(el){ var p = el.getAttribute('data-ia').split(':'); el.setAttribute(p[0], T(p[1])); });
+    $$('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang===lang)); });
+    $$('.filters button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.f===filter)); });
+    document.title = 'EKE-COUTURE | ' + T('hero.tag');
+    renderGrid(); renderPieces(); renderContact(); buildManifesto();
+    $('#status').textContent=''; $('#status').className='status';
+  }
+  $$('.lang button').forEach(function(b){
+    b.addEventListener('click',function(){
+      lang = b.dataset.lang; try{ localStorage.setItem('eke-lang',lang); }catch(e){}
+      applyLang(); if(window.ScrollTrigger) ScrollTrigger.refresh();
+    });
+  });
+
+  function setFilter(f){
+    filter = f;
+    $$('.filters button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.f===f)); });
+    $$('.card').forEach(function(c){
+      var show = f==='all' || c.dataset.c===f; c.hidden = !show;
+      if(show && hasGsap && !reduce){ gsap.fromTo(c,{y:24,opacity:0},{y:0,opacity:1,duration:.7,ease:'power3.out'}); }
+    });
+  }
+  $$('.filters button').forEach(function(b){ b.addEventListener('click',function(){ setFilter(b.dataset.f); }); });
+  $$('[data-filter-go]').forEach(function(a){ a.addEventListener('click',function(){ setFilter(a.dataset.filterGo); }); });
+
+  var dlg = $('#dlg'), current = null;
+  $('#grid').addEventListener('click',function(e){
+    var card = e.target.closest('.card'); if(!card) return;
+    current = +card.dataset.i; var it = items[current];
+    $('#dlgCat').textContent = it.t[lang]+' · '+catLabel(it.c);
+    $('#dlgName').textContent = it.n; $('#dlgText').textContent = it.d[lang];
+    $('#dlgShot').className = 'shot '+(it.c==='homme'?'h':'f');
+    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+  });
+  $('#dlgClose').addEventListener('click',function(){ dlg.close(); });
+  dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+  $('#dlgCta').addEventListener('click',function(){ if(current!==null) $('#piece').value = String(current); dlg.close(); });
+
+  var form = $('#fit'), status = $('#status');
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); status.className = 'status';
+    var name = $('#name').value.trim();
+    $('#fName').classList.toggle('err', !name);
+    if(!name){ status.textContent = T('s.name'); $('#name').focus(); return; }
+    if(!CONFIG.whatsapp && !CONFIG.email){ status.textContent = T('s.none'); return; }
+    var via = ($('input[name=via]:checked')||{}).value;
+    if(!via){ status.textContent = T('s.via'); return; }
+    var sel = $('#piece'), pieceName = sel.value==='other' ? T('form.other') : items[+sel.value].n;
+    var body = T('msg.hello')+' '+name+'.\n'+T('msg.piece')+' : '+pieceName+'.\n'+($('#msg').value.trim());
+    if(via==='wa'){ window.open('https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(body),'_blank','noopener'); }
+    else { location.href = 'mailto:'+CONFIG.email+'?subject='+encodeURIComponent(T('msg.sub')+' - '+name)+'&body='+encodeURIComponent(body); }
+    status.textContent = T('s.ok'); status.className = 'status ok';
+  });
+
+  var nav = $('#nav'), mb = $('#menuBtn');
+  mb.addEventListener('click',function(){ var o = nav.classList.toggle('open'); mb.setAttribute('aria-expanded', String(o)); });
+  nav.addEventListener('click',function(e){ if(e.target.tagName==='A'){ nav.classList.remove('open'); mb.setAttribute('aria-expanded','false'); } });
+
+  var hdr = $('#hdr'), prog = $('.prog'), maxS = 1, solid = false;
+  function measure(){ maxS = Math.max(1, document.documentElement.scrollHeight - innerHeight); }
+  function onScroll(){
+    var y = window.scrollY, s = y>40;
+    if(s!==solid){ solid = s; hdr.classList.toggle('solid', s); }
+    prog.style.transform = 'scaleX('+Math.min(1,y/maxS).toFixed(4)+')';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',function(){ measure(); onScroll(); });
+  window.addEventListener('load',function(){ measure(); onScroll(); });
+  measure(); onScroll();
+  var fr = $('.frise');
+  if('IntersectionObserver' in window && fr){ new IntersectionObserver(function(es){ fr.classList.toggle('off', !es[0].isIntersecting); }).observe(fr); }
+
+  /* la scène n'est active que pendant l'histoire */
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ document.body.classList.toggle('in-story', es[0].isIntersecting); },{threshold:0}).observe($('#story'));
+  } else document.body.classList.add('in-story');
+
+  applyLang();
+
+  /* ===== résultat du chargement 3D ===== */
+  var settled = false;
+  function glReady(ok){
+    if(settled) return; settled = true;
+    window.EKE.ready = ok;
+    root.classList.remove('pending');
+    root.classList.add(ok ? 'gl' : 'nogl');
+    if(ok && hasGsap && !reduce){
+      gsap.from('.hero-ui',{opacity:0,y:20,duration:1.2,delay:2.2,ease:'power3.out'});
+      gsap.from('.scroll-cue',{opacity:0,duration:1,delay:3});
+    }
+    if(window.ScrollTrigger) ScrollTrigger.refresh();
+  }
+  if(reduce || !hasGsap){ glReady(false); }
+  setTimeout(function(){ glReady(false); }, 6000);
+
+  if(reduce || !hasGsap){
+    $$('#manifesto .w').forEach(function(w){ w.style.opacity=1; });
+    var sm = $('#pf animateTransform'); if(reduce && sm) sm.remove();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if(window.Lenis){
+    var lenis = new Lenis({duration:1.15, easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t));}});
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+    gsap.ticker.lagSmoothing(0);
+    document.addEventListener('click',function(e){
+      var a = e.target.closest('a[href^="#"]'); if(!a) return;
+      var id = a.getAttribute('href'); if(id.length<2) return;
+      var t = $(id); if(!t) return;
+      e.preventDefault(); lenis.scrollTo(t,{offset:-60});
+    });
+  }
+
+  /* chorégraphie : une seule timeline pilote l'emblème 3D selon le défilement */
+  var dawn = $('.dawn'), lastDawn = -1;
+  function X(v){ return mobile() ? 0 : v; }
+  function Y(d,m){ return mobile() ? m : d; }
+  S.y = Y(.07,.2); S.glow = .6;
+  var tl = gsap.timeline({
+    defaults:{ease:'power1.inOut',duration:1},
+    scrollTrigger:{trigger:'#story',start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true},
+    onUpdate:function(){ var v = +(.3+.6*S.glow).toFixed(2); if(Math.abs(v-lastDawn)>=.04){ lastDawn = v; dawn.style.opacity = v; } }
+  });
+  tl.to(S,{rotY:.55,zoom:1.4,x:function(){return X(.2);},y:function(){return Y(0,.2);},glow:.75},0)
+    .to(S,{rotY:0,rotZ:-Math.PI/2,zoom:1.5,x:function(){return X(.24);},y:function(){return Y(0,.2);},glow:.55},1)
+    .to(S,{rotZ:0,rotY:-.55,rotX:.15,zoom:.8,x:function(){return X(-.22);},y:function(){return Y(-.02,.12);},glow:.95},2)
+    .to(S,{rotY:-.55+Math.PI*2,rotX:0,zoom:1.15,x:0,y:function(){return Y(.16,.2);},glow:1},3);
+
+  /* apparitions des textes de chapitre */
+  gsap.utils.toArray('.rv').forEach(function(el){
+    var parts = $$('.num,h2,.rule,.sub,.hint,.pill',el);
+    gsap.from(parts,{y:36,opacity:0,duration:1.1,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 70%',toggleActions:'play none none reverse'}});
+  });
+  gsap.from('#marque .num,#marque .rule',{y:30,opacity:0,duration:1,scrollTrigger:{trigger:'#marque',start:'top 70%',toggleActions:'play none none reverse'}});
+
+  gsap.utils.toArray('.reveal-mask').forEach(function(el,i){
+    gsap.from(el,{clipPath:'inset(100% 0% 0% 0% round 18px)',duration:1.3,ease:'power3.inOut',delay:i*.12,scrollTrigger:{trigger:'.duo',start:'top 80%'}});
+  });
+  gsap.utils.toArray('.card').forEach(function(el){
+    gsap.from(el,{y:40,opacity:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}});
+  });
+  gsap.utils.toArray('.solid-sec h2').forEach(function(el){
+    gsap.from(el,{y:30,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});
+  });
+
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var cur = $('.cursor');
+    var qx = gsap.quickTo(cur,'x',{duration:.35,ease:'power3'}), qy = gsap.quickTo(cur,'y',{duration:.35,ease:'power3'});
+    window.addEventListener('mousemove',function(e){ cur.style.opacity=1; qx(e.clientX); qy(e.clientY); });
+    var big = false;
+    document.addEventListener('mouseover',function(e){ var b = !!e.target.closest('[data-hover]'); if(b!==big){ big = b; cur.classList.toggle('big', b); } });
+    document.documentElement.addEventListener('mouseleave',function(){ cur.style.opacity=0; });
+    $$('.hero-cta .pill, .hdr-cta, form .pill').forEach(function(b){
+      var mx = gsap.quickTo(b,'x',{duration:.5,ease:'power3'}), my = gsap.quickTo(b,'y',{duration:.5,ease:'power3'});
+      b.addEventListener('mousemove',function(e){ var r=b.getBoundingClientRect(); mx((e.clientX-r.left-r.width/2)*.25); my((e.clientY-r.top-r.height/2)*.35); });
+      b.addEventListener('mouseleave',function(){ mx(0); my(0); });
+    });
+  }
+})();
+</script>
+
+<script type="module">
+/* Scène 3D : l'emblème en cuivre, construit à partir des mêmes formes que le logo */
+const EKE = window.EKE;
+try{
+  if(EKE.reduce || !window.gsap) throw new Error('3D désactivée');
+  const THREE = await import('three');
+  const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js');
+  const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+  const S = EKE.S;
+
+  const canvas = document.getElementById('gl');
+  const lowEnd = (navigator.hardwareConcurrency || 4) <= 4 || innerWidth < 860;
+  let hi = lowEnd ? 1 : Math.min(devicePixelRatio, 1.5), lo = Math.max(0.65, hi*0.75), cur = lo;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha:true, powerPreference:'high-performance' });
+  renderer.setPixelRatio(cur);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.localClippingEnabled = true;
+
+  const scene = new THREE.Scene();
+  const pm = new THREE.PMREMGenerator(renderer);
+  scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
+
+  const key = new THREE.DirectionalLight(0xfff1dd, 2.2); key.position.set(4, 6, 8); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xB9803F, 1.8); rim.position.set(-6, 2, -4); scene.add(rim);
+  const sunLight = new THREE.PointLight(0xffb76b, 0, 40, 1.4); scene.add(sunLight);
+
+  const root = new THREE.Group(); root.scale.setScalar(0.04); scene.add(root);
+  const inner = new THREE.Group(); inner.position.y = -44; root.add(inner);
+
+  const metal = new THREE.MeshStandardMaterial({ color:0xB9803F, metalness:1, roughness:0.32, envMapIntensity:1.3 });
+  const clip = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
+  const worldClip = new THREE.Plane();
+  const sunMat = new THREE.MeshStandardMaterial({ color:0xc78a3c, metalness:0.7, roughness:0.32, emissive:0x8a5320, emissiveIntensity:0.3, clippingPlanes:[worldClip] });
+
+  const D = 14, parts = { prongs:[], rays:[] };
+  function box(x, y, w, h){
+    const g = new RoundedBoxGeometry(w, h, D, 3, 0.9); g.translate(0, h/2, 0);
+    const m = new THREE.Mesh(g, metal); m.position.set(x + w/2, -(y + h), 0); inner.add(m); return m;
+  }
+  parts.base = box(-96, 0, 192, 8);
+  [[-96,-64,8,64],[-80,-40,8,40],[-64,-64,8,64],[88,-64,8,64],[72,-40,8,40],[56,-64,8,64]].forEach(r => parts.prongs.push(box(...r)));
+  function ray(pts){
+    const sh = new THREE.Shape(); pts.forEach((p,i) => i ? sh.lineTo(p[0],p[1]) : sh.moveTo(p[0],p[1]));
+    const g = new THREE.ExtrudeGeometry(sh, { depth:D, bevelEnabled:true, bevelSize:0.8, bevelThickness:0.8, bevelSegments:2 });
+    g.translate(0, 0, -D/2);
+    const m = new THREE.Mesh(g, metal); inner.add(m); parts.rays.push(m);
+  }
+  ray([[0,0],[8,0],[64,96],[56,96]]);
+  ray([[0,0],[-8,0],[-64,96],[-56,96]]);
+  parts.sun = new THREE.Mesh(new THREE.SphereGeometry(24, 40, 28), sunMat);
+  parts.sun.position.set(0, 56, 0); inner.add(parts.sun);
+
+  /* poussière dorée */
+  const N = 180, pos = new Float32Array(N*3);
+  for(let i=0;i<N;i++){ pos[i*3]=(Math.random()-.5)*22; pos[i*3+1]=(Math.random()-.5)*12; pos[i*3+2]=(Math.random()-.5)*10; }
+  const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  const dust = new THREE.Points(dg, new THREE.PointsMaterial({ color:0xB9803F, size:0.045, transparent:true, opacity:0.55, depthWrite:false, blending:THREE.AdditiveBlending }));
+  scene.add(dust);
+
+  /* intro : l'horizon se pose, les rayons montent, le soleil se lève */
+  parts.base.scale.x = 0.001;
+  parts.prongs.forEach(m => m.scale.y = 0.001);
+  parts.rays.forEach(m => m.scale.y = 0.001);
+  parts.sun.position.y = -26;
+  const intro = { dust:0 };
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' }, delay:.3 });
+  tl.to(parts.base.scale,{ x:1, duration:1.1 })
+    .to(parts.prongs.map(m=>m.scale),{ y:1, duration:.9, stagger:.08 }, '-=.5')
+    .to(parts.rays.map(m=>m.scale),{ y:1, duration:1, stagger:.1 }, '-=.6')
+    .to(parts.sun.position,{ y:56, duration:1.8, ease:'power2.out' }, '-=.7')
+    .to(intro,{ dust:1, duration:2 }, '<');
+
+  let W=1, H=1, baseDist=16, visH=8, visW=12, last='';
+  function resize(){
+    W = innerWidth; H = innerHeight;
+    renderer.setSize(W, H, false);
+    camera.aspect = W/H; camera.updateProjectionMatrix();
+    const t = Math.tan(camera.fov*Math.PI/360), frac = camera.aspect < 1 ? 0.84 : 0.5;
+    baseDist = (7.68/frac)/(2*t*camera.aspect);
+    visH = 2*t*baseDist; visW = visH*camera.aspect; last = '';
+  }
+  resize(); addEventListener('resize', resize);
+
+  let mx=0, my=0, tmx=0, tmy=0;
+  addEventListener('pointermove', e => { tmx = e.clientX/W - .5; tmy = e.clientY/H - .5; }, { passive:true });
+
+  let live = true, lastMove = 0, needSharp = false, slow = 0, frames = 0, bad = 0, prev = performance.now();
+  function stop3D(){
+    live = false; root.visible = false;
+    document.documentElement.classList.remove('gl'); document.documentElement.classList.add('nogl');
+    try{ renderer.dispose(); }catch(e){}
+  }
+  new IntersectionObserver(es => { live = es[0].isIntersecting && !document.documentElement.classList.contains('nogl'); if(live) last = ''; }).observe(document.getElementById('story'));
+  function setR(r){ if(r !== cur){ cur = r; renderer.setPixelRatio(r); renderer.setSize(W, H, false); } }
+  function draw(){
+    root.rotation.set(S.rotX + my*.14, S.rotY + mx*.3, S.rotZ);
+    root.position.set(S.x*visW, S.y*visH, 0);
+    camera.position.set(0, 0, baseDist*S.zoom);
+    sunMat.emissiveIntensity = .12 + S.glow*.45;
+    sunLight.intensity = (.5 + S.glow*2.5) * 40;
+    sunLight.position.set(root.position.x, root.position.y + 1.2, 2.5);
+    rim.intensity = 1.2 + S.glow*1.2;
+    dust.rotation.y = S.rotY*.15; dust.position.y = (S.zoom-1)*.4; dust.material.opacity = .55*intro.dust;
+    root.updateMatrixWorld(true);
+    worldClip.copy(clip).applyMatrix4(inner.matrixWorld);
+    renderer.render(scene, camera);
+  }
+  (function frame(now){
+    requestAnimationFrame(frame);
+    if(!live) return;
+    mx += (tmx-mx)*.08; my += (tmy-my)*.08;
+    const k = [S.rotX,S.rotY,S.rotZ,S.zoom,S.x,S.y,S.glow,mx,my,intro.dust].map(v => v.toFixed(4)).join();
+    if(k !== last || tl.isActive()){
+      /* en mouvement : image légère (résolution réduite) */
+      last = k; lastMove = now; needSharp = true;
+      setR(lo); draw();
+      const dt = now - prev; prev = now;
+      if(dt < 120){ frames++; if(dt > 28) slow++; }
+      if(frames >= 40){
+        if(slow > 14){
+          if(hi > 0.7){ hi = Math.max(0.7, hi*0.85); lo = Math.max(0.5, lo*0.85); bad = 0; }
+          else if(++bad >= 2){ stop3D(); return; }   /* appareil trop faible : on bascule en 2D */
+        } else bad = 0;
+        frames = 0; slow = 0;
+      }
+    } else {
+      prev = now;
+      /* à l'arrêt : une image nette, puis plus rien */
+      if(needSharp && now - lastMove > 200){ setR(hi); draw(); needSharp = false; }
+    }
+  })(performance.now());
+
+  EKE.glReady(true);
+}catch(err){
+  console.warn('3D indisponible, version 2D :', err && err.message);
+  EKE.glReady(false);
+}
+</script>
+</body>
+</html>
