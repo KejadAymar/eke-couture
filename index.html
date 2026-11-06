@@ -52,12 +52,14 @@ h2{font-size:clamp(2rem,5vw,4.2rem);text-transform:uppercase;letter-spacing:.05e
 
 /* scène 3D fixe */
 #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 1s}
-.dawn{position:fixed;left:50%;bottom:-25vh;width:130vw;height:80vh;transform:translateX(-50%);transition:opacity .6s linear;z-index:0;pointer-events:none;background:radial-gradient(closest-side,rgba(185,128,63,.5),rgba(185,128,63,.12) 55%,transparent 75%);opacity:0;visibility:hidden;will-change:opacity;contain:strict}
+.sky,.night,.sunglow{position:fixed;z-index:0;pointer-events:none;visibility:hidden}
+.sky{inset:0;background:linear-gradient(180deg,#e8d5b2 0%,#f3e5ca 50%,#f8eedb 100%)}
+.night{inset:0;background:linear-gradient(180deg,#2f231a 0%,#8f5f38 24%,#d9a56a 50%,#f2d8aa 78%,#f8eddb 100%);transition:opacity .6s linear;will-change:opacity}
+.sunglow{left:50%;bottom:-22vh;width:120vw;height:78vh;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,236,196,.85),rgba(255,214,150,.3) 55%,transparent 78%);transition:opacity .6s linear;will-change:opacity}
+body.in-story .sky,body.in-story .night,body.in-story .sunglow,body.in-story #gl{visibility:visible}
+body:not(.in-story) .sky,body:not(.in-story) .night,body:not(.in-story) .sunglow,body:not(.in-story) #gl{visibility:hidden}
 html.gl #gl{opacity:1}
-body.in-story #gl,body.in-story .dawn{visibility:visible}
-body:not(.in-story) #gl,body:not(.in-story) .dawn{visibility:hidden}
-html:not(.gl) .dawn{opacity:.55}
-html.nogl.pending .dawn{opacity:.55}
+
 
 /* header */
 header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;height:56px;padding:0 var(--pad);transition:background .5s var(--ease)}
@@ -111,7 +113,7 @@ html.nogl #gl{display:none}
 @media(max-width:860px){
   .chap{align-items:flex-end;padding-bottom:11vh}
   .chap.hero{align-items:center}
-  .chap .in{background:linear-gradient(transparent,rgba(20,17,15,.55) 30%);padding-top:30px;margin:0 -8px;padding-inline:8px}
+  .chap .in{background:radial-gradient(ellipse 75% 62% at 50% 60%,rgba(244,238,227,.78) 45%,rgba(244,238,227,0) 100%);padding:40px 20px;margin:0 -20px}
   .eke-letters{top:34%;font-size:clamp(2.4rem,12vw,4rem)}
 }
 html.nogl .chap{min-height:auto;padding:100px var(--pad)}
@@ -177,7 +179,7 @@ dialog .close{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:
 .light li{color:rgba(20,17,15,.66);border-color:rgba(20,17,15,.14)}
 .light li b,.light li a{color:var(--ink)}
 .light .field label,.light .field legend{color:rgba(20,17,15,.62)}
-.light .field input,.light .field select,.light .field textarea{background:#fff;border-color:rgba(20,17,15,.18);color:var(--ink)}
+.light .field input,.light .field select,.light .field textarea{background-color:#fff;border-color:rgba(20,17,15,.18);color:var(--ink)}
 .light .chan label{border-color:rgba(20,17,15,.2);color:rgba(20,17,15,.66)}
 .light .chan label:has(input:checked){border-color:var(--copper);color:var(--ink)}
 .light .status{color:rgba(20,17,15,.66)}
@@ -199,7 +201,21 @@ form{display:grid;gap:16px}
 .field{display:grid;gap:8px}
 .field label,.field legend{font-size:11px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
 .field input,.field select,.field textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;transition:border-color .3s}
-.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--copper) 50%),linear-gradient(135deg,var(--copper) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.field select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:48px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23B9803F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");background-position:right 18px center;background-size:12px 8px;background-repeat:no-repeat}
+.field select:hover{border-color:var(--copper)}
+.field select option{color:#14110F;background:#fff}
+/* carte de visite */
+.card-sec{text-align:center}
+.card-sec .lead{margin:14px auto 0;max-width:46ch}
+.bcard{perspective:1200px;width:min(86vw,520px);aspect-ratio:85/55;margin:44px auto 0;cursor:pointer;border:0;background:none;padding:0;display:block}
+.bcard .inner{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.22,.8,.2,1)}
+.bcard.flip .inner{transform:rotateY(180deg)}
+.bcard .face{position:absolute;inset:0;border-radius:10px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 0 0 1px rgba(244,238,227,.14),0 24px 60px rgba(0,0,0,.45)}
+.bcard .face img{display:block;width:100%;height:100%}
+.bcard .back{transform:rotateY(180deg)}
+.card-act{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:34px}
+.bcard:focus-visible{outline:2px solid var(--copper);outline-offset:8px;border-radius:12px}
+@media (prefers-reduced-motion:reduce){.bcard .inner{transition:none}}
 .field textarea{min-height:110px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--copper)}
 .field.err input{border-color:#d46a5a}
@@ -220,6 +236,29 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
 .cursor.big{width:54px;height:54px;margin:-27px 0 0 -27px;background:rgba(185,128,63,.22);border:1px solid var(--copper)}
 @media(hover:none){.cursor{display:none}}
 @media(prefers-reduced-motion:reduce){.frise svg{animation:none}*{transition-duration:.01ms!important}#manifesto .w{opacity:1}}
+/* l'histoire est écrite à l'encre sur la lumière du matin */
+#story{color:var(--ink)}
+.chap .sub{color:rgba(20,17,15,.7)}
+.chap .num{color:#8a5a22}
+.chap .hint{color:#7a5424}
+.hero-name{fill:var(--ink)}
+.hero h1{color:rgba(20,17,15,.72)}
+.scroll-cue{color:rgba(20,17,15,.6)}
+#story .pill.solid{background:var(--ink);color:var(--ivory)}
+#story .pill.solid:hover{background:#2c231c}
+#story .pill.ghost{border-color:rgba(20,17,15,.35);color:var(--ink)}
+#story .pill.ghost:hover{border-color:var(--ink);color:var(--ink)}
+.fb{color:var(--ink)}
+/* en-tête : transparent sur l'aube, clair pendant l'histoire */
+body.in-story header.solid{background:rgba(244,238,227,.92);color:var(--ink)}
+body.in-story header.solid nav a{color:rgba(20,17,15,.62)}
+body.in-story header.solid nav a:hover{color:var(--ink)}
+body.in-story header.solid .lang{border-color:rgba(20,17,15,.2)}
+body.in-story header.solid .lang button{color:rgba(20,17,15,.6)}
+body.in-story header.solid .lang button[aria-pressed="true"]{background:var(--ink);color:var(--ivory)}
+body.in-story header.solid .menu-btn{border-color:rgba(20,17,15,.25)}
+body.in-story header.solid .menu-btn span{background:var(--ink)}
+.menu-btn[aria-expanded="true"] span{background:var(--ivory)!important}
 /* contacts sur tuile claire : plus spécifique que les règles sombres */
 .light.contact ul{border-color:rgba(20,17,15,.14)}
 .light.contact li{color:rgba(20,17,15,.66);border-color:rgba(20,17,15,.14)}
@@ -249,7 +288,9 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
   </defs>
 </svg>
 
-<div class="dawn" aria-hidden="true"></div>
+<div class="sky" aria-hidden="true"></div>
+<div class="night" aria-hidden="true"></div>
+<div class="sunglow" aria-hidden="true"></div>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="prog" aria-hidden="true"></div>
 <div class="cursor" aria-hidden="true"></div>
@@ -264,6 +305,7 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
       <li><a href="#marque" data-i="nav.brand"></a></li>
       <li><a href="#duo" data-i="nav.duo"></a></li>
       <li><a href="#catalogue" data-i="nav.cat"></a></li>
+      <li><a href="#carte" data-i="nav.card"></a></li>
       <li><a href="#contact" data-i="nav.contact"></a></li>
     </ul>
   </nav>
@@ -366,6 +408,25 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
   </div>
 </section>
 
+<section class="solid-sec band card-sec" id="carte">
+  <div class="wrap">
+    <p class="eyebrow" data-i="card.eyebrow"></p>
+    <h2 data-i="card.title"></h2>
+    <p class="lead" data-i="card.lead"></p>
+    <button class="bcard" id="bcard" type="button" aria-pressed="false" data-ia="aria-label:card.flip">
+      <span class="inner">
+        <span class="face front"><img src="carte/verso.svg" alt="" width="850" height="550" loading="lazy" decoding="async"></span>
+        <span class="face back"><img src="carte/recto.svg" alt="" width="850" height="550" loading="lazy" decoding="async"></span>
+      </span>
+    </button>
+    <div class="card-act">
+      <button class="pill ghost" type="button" id="cardFlip" data-hover data-i="card.see"></button>
+      <button class="pill solid" type="button" id="cardDl" data-hover data-i="card.dl"></button>
+      <button class="pill ghost" type="button" id="cardVcf" data-hover data-i="card.vcf"></button>
+    </div>
+  </div>
+</section>
+
 <section class="solid-sec band contact light" id="contact">
   <div class="wrap">
     <p class="eyebrow" data-i="contact.eyebrow"></p>
@@ -433,13 +494,14 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
   var mobile = function(){ return innerWidth/innerHeight < .9; };
 
   /* état partagé avec la scène 3D */
-  var S = { rotX:0, rotY:0, rotZ:0, zoom:1, x:0, y:0, glow:.6 };
+  var S = { rotX:0, rotY:0, rotZ:0, zoom:1.9, x:0, y:.55, glow:.9, night:1 };
   window.EKE = { S:S, reduce:reduce, ready:false, glReady:glReady };
 
   var DICT = {
     fr:{
       'nav.aria':'Navigation principale','menu.open':'Ouvrir le menu','close':'Fermer',
-      'nav.brand':'La marque','nav.duo':'Homme & Femme','nav.cat':'Catalogue','nav.contact':'Contact','cta.fit':'Essayage',
+      'nav.brand':'La marque','nav.duo':'Homme & Femme','nav.cat':'Catalogue','nav.contact':'Contact','nav.card':'Carte','cta.fit':'Essayage',
+      'card.eyebrow':'La carte','card.title':'Ma carte de visite','card.lead':'Touchez la carte pour la retourner. Gardez-la, ou ajoutez le contact à votre téléphone.','card.flip':'Retourner la carte de visite','card.see':'Retourner la carte','card.dl':'Télécharger la carte','card.vcf':'Ajouter aux contacts',
       'hero.tag':"Le jour s'est levé",'hero.cat':'Voir le catalogue','hero.house':'La maison','scroll':'Défiler',
       'man.eyebrow':'Le nom',
       'man.text':"EKE est d'abord un nom de famille. Il veut dire : le jour s'est levé. Nous en avons fait une maison de couture.",
@@ -466,7 +528,8 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
     },
     en:{
       'nav.aria':'Main navigation','menu.open':'Open menu','close':'Close',
-      'nav.brand':'The house','nav.duo':'Men & Women','nav.cat':'Catalogue','nav.contact':'Contact','cta.fit':'Fitting',
+      'nav.brand':'The house','nav.duo':'Men & Women','nav.cat':'Catalogue','nav.contact':'Contact','nav.card':'Card','cta.fit':'Fitting',
+      'card.eyebrow':'The card','card.title':'My business card','card.lead':'Tap the card to flip it. Keep it, or add the contact to your phone.','card.flip':'Flip the business card','card.see':'Flip the card','card.dl':'Download the card','card.vcf':'Add to contacts',
       'hero.tag':'The day has risen','hero.cat':'View the catalogue','hero.house':'The house','scroll':'Scroll',
       'man.eyebrow':'The name',
       'man.text':'EKE is first of all a family name. It means: the day has risen. We turned it into a couture house.',
@@ -584,6 +647,27 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
   dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
   $('#dlgCta').addEventListener('click',function(){ if(current!==null) $('#piece').value = String(current); dlg.close(); });
 
+  /* carte de visite : retourner, télécharger (PNG), ajouter aux contacts (vCard) */
+  var bcard = $('#bcard');
+  function flipCard(){ var on = bcard.classList.toggle('flip'); bcard.setAttribute('aria-pressed', on); }
+  bcard.addEventListener('click', flipCard); $('#cardFlip').addEventListener('click', flipCard);
+  function saveBlob(blob, name){ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000); }
+  function loadImg(src){ return new Promise(function(ok, ko){ var i = new Image(); i.onload = function(){ ok(i); }; i.onerror = ko; i.src = src; }); }
+  $('#cardDl').addEventListener('click', function(){
+    Promise.all([loadImg('carte/verso.svg'), loadImg('carte/recto.svg')]).then(function(im){
+      var w = 1275, h = 825, g = 60, c = document.createElement('canvas');
+      c.width = w*2 + g*3; c.height = h + g*2;
+      var x = c.getContext('2d'); x.fillStyle = '#E9E2D4'; x.fillRect(0,0,c.width,c.height);
+      x.drawImage(im[0], g, g, w, h); x.drawImage(im[1], w+g*2, g, w, h);
+      c.toBlob(function(b){ if(b) saveBlob(b, 'carte-eke-couture.png'); else window.open('carte/verso.svg','_blank'); }, 'image/png');
+    }).catch(function(){ window.open('carte/verso.svg','_blank'); });
+  });
+  $('#cardVcf').addEventListener('click', function(){
+    var tel = '+' + (CONFIG.whatsapp || CONFIG.phone.replace(/\D/g,''));
+    var v = ['BEGIN:VCARD','VERSION:3.0','N:EKE;Eric;;;','FN:Eric EKE','ORG:EKE-COUTURE','TITLE:Styliste-créateur','TEL;TYPE=CELL:'+tel, CONFIG.email ? 'EMAIL:'+CONFIG.email : '', 'END:VCARD'].filter(Boolean).join('\r\n');
+    saveBlob(new Blob([v], {type:'text/vcard;charset=utf-8'}), 'eke-couture.vcf');
+  });
+
   var form = $('#fit'), status = $('#status');
   form.addEventListener('submit',function(e){
     e.preventDefault(); status.className = 'status';
@@ -663,19 +747,19 @@ footer{position:relative;z-index:2;background:#0b0908;padding:60px 0 40px;color:
   }
 
   /* chorégraphie : une seule timeline pilote l'emblème 3D selon le défilement */
-  var dawn = $('.dawn'), lastDawn = -1;
+  var night = $('.night'), sunglow = $('.sunglow'), lastN = -1, lastG = -1;
   function X(v){ return mobile() ? 0 : v; }
   function Y(d,m){ return mobile() ? m : d; }
-  S.y = Y(.07,.2); S.glow = .6;
+  S.zoom = mobile() ? 1.9 : 1.7; S.y = Y(.42,.55); S.glow = .9; S.night = 1;
   var tl = gsap.timeline({
     defaults:{ease:'power1.inOut',duration:1},
     scrollTrigger:{trigger:'#story',start:'top top',end:'bottom bottom',scrub:true,invalidateOnRefresh:true},
-    onUpdate:function(){ var v = +(.3+.6*S.glow).toFixed(2); if(Math.abs(v-lastDawn)>=.04){ lastDawn = v; dawn.style.opacity = v; } }
+    onUpdate:function(){ var n = +S.night.toFixed(2), g = +S.glow.toFixed(2); if(Math.abs(n-lastN)>=.04){ lastN = n; night.style.opacity = n; } if(Math.abs(g-lastG)>=.04){ lastG = g; sunglow.style.opacity = g; } }
   });
-  tl.to(S,{rotY:.55,zoom:1.4,x:function(){return X(.2);},y:function(){return Y(0,.2);},glow:.75},0)
-    .to(S,{rotY:0,rotZ:-Math.PI/2,zoom:1.5,x:function(){return X(.24);},y:function(){return Y(0,.2);},glow:.55},1)
-    .to(S,{rotZ:0,rotY:-.55,rotX:.15,zoom:.8,x:function(){return X(-.22);},y:function(){return Y(-.02,.12);},glow:.95},2)
-    .to(S,{rotY:-.55+Math.PI*2,rotX:0,zoom:1.15,x:0,y:function(){return Y(.16,.2);},glow:1},3);
+  tl.to(S,{rotY:.55,zoom:1.4,x:function(){return X(.2);},y:function(){return Y(0,.2);},glow:.8,night:.8},0)
+    .to(S,{rotY:0,rotZ:-Math.PI/2,zoom:1.5,x:function(){return X(.24);},y:function(){return Y(0,.2);},glow:.45,night:.15},1)
+    .to(S,{rotZ:0,rotY:-.55,rotX:.15,zoom:.8,x:function(){return X(-.22);},y:function(){return Y(-.02,.12);},glow:.3,night:0},2)
+    .to(S,{rotY:-.55+Math.PI*2,rotX:0,zoom:1.15,x:0,y:function(){return Y(.16,.2);},glow:.25,night:0},3);
 
   /* apparitions des textes de chapitre */
   gsap.utils.toArray('.rv').forEach(function(el){
@@ -734,17 +818,17 @@ try{
   scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
 
-  const key = new THREE.DirectionalLight(0xfff1dd, 2.2); key.position.set(4, 6, 8); scene.add(key);
+  const key = new THREE.DirectionalLight(0xfff1dd, 1.3); key.position.set(4, 6, 8); scene.add(key);
   const rim = new THREE.DirectionalLight(0xB9803F, 1.8); rim.position.set(-6, 2, -4); scene.add(rim);
   const sunLight = new THREE.PointLight(0xffb76b, 0, 40, 1.4); scene.add(sunLight);
 
   const root = new THREE.Group(); root.scale.setScalar(0.04); scene.add(root);
   const inner = new THREE.Group(); inner.position.y = -44; root.add(inner);
 
-  const metal = new THREE.MeshStandardMaterial({ color:0xB9803F, metalness:1, roughness:0.32, envMapIntensity:1.3 });
+  const metal = new THREE.MeshStandardMaterial({ color:0x1b1511, metalness:0.35, roughness:0.62, envMapIntensity:0.55 });
   const clip = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
   const worldClip = new THREE.Plane();
-  const sunMat = new THREE.MeshStandardMaterial({ color:0xc78a3c, metalness:0.7, roughness:0.32, emissive:0x8a5320, emissiveIntensity:0.3, clippingPlanes:[worldClip] });
+  const sunMat = new THREE.MeshBasicMaterial({ color:0xffe3b3, toneMapped:false, clippingPlanes:[worldClip] });
 
   const D = 14, parts = { prongs:[], rays:[] };
   function box(x, y, w, h){
@@ -764,12 +848,7 @@ try{
   parts.sun = new THREE.Mesh(new THREE.SphereGeometry(24, 40, 28), sunMat);
   parts.sun.position.set(0, 56, 0); inner.add(parts.sun);
 
-  /* poussière dorée */
-  const N = 180, pos = new Float32Array(N*3);
-  for(let i=0;i<N;i++){ pos[i*3]=(Math.random()-.5)*22; pos[i*3+1]=(Math.random()-.5)*12; pos[i*3+2]=(Math.random()-.5)*10; }
-  const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  const dust = new THREE.Points(dg, new THREE.PointsMaterial({ color:0xB9803F, size:0.045, transparent:true, opacity:0.55, depthWrite:false, blending:THREE.AdditiveBlending }));
-  scene.add(dust);
+  const dust = { rotation:{y:0}, position:{y:0}, material:{opacity:0} };
 
   /* intro : l'horizon se pose, les rayons montent, le soleil se lève */
   parts.base.scale.x = 0.001;
@@ -810,10 +889,7 @@ try{
     root.rotation.set(S.rotX + my*.14, S.rotY + mx*.3, S.rotZ);
     root.position.set(S.x*visW, S.y*visH, 0);
     camera.position.set(0, 0, baseDist*S.zoom);
-    sunMat.emissiveIntensity = .12 + S.glow*.45;
-    sunLight.intensity = (.5 + S.glow*2.5) * 40;
-    sunLight.position.set(root.position.x, root.position.y + 1.2, 2.5);
-    rim.intensity = 1.2 + S.glow*1.2;
+    rim.intensity = 1.6;
     dust.rotation.y = S.rotY*.15; dust.position.y = (S.zoom-1)*.4; dust.material.opacity = .55*intro.dust;
     root.updateMatrixWorld(true);
     worldClip.copy(clip).applyMatrix4(inner.matrixWorld);
@@ -823,7 +899,7 @@ try{
     requestAnimationFrame(frame);
     if(!live) return;
     mx += (tmx-mx)*.08; my += (tmy-my)*.08;
-    const k = [S.rotX,S.rotY,S.rotZ,S.zoom,S.x,S.y,S.glow,mx,my,intro.dust].map(v => v.toFixed(4)).join();
+    const k = [S.rotX,S.rotY,S.rotZ,S.zoom,S.x,S.y,mx,my,intro.dust].map(v => v.toFixed(4)).join();
     if(k !== last || tl.isActive()){
       /* en mouvement : image légère (résolution réduite) */
       last = k; lastMove = now; needSharp = true;
