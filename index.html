@@ -203,6 +203,16 @@ form{display:grid;gap:16px}
 .field input,.field select,.field textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;transition:border-color .3s}
 .field select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:48px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23B9803F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");background-position:right 18px center;background-size:12px 8px;background-repeat:no-repeat}
 .field select:hover{border-color:var(--copper)}
+/* visuels du catalogue et des collections */
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.dlg .shot{position:relative}
+.dlg .shot img{object-position:50% 12%}
+.panel .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;z-index:-2;transition:transform 1.2s var(--ease)}
+.panel::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,17,15,0) 40%,rgba(20,17,15,.82))}
+.panel:hover .bg{transform:scale(1.04)}
+.panel.h,.panel.f{color:var(--ivory)}
+.panel.f .pill.ghost,.panel.h .pill.ghost{border-color:rgba(244,238,227,.5);color:var(--ivory)}
+.panel.f:hover .pill.ghost{border-color:var(--copper);background:transparent;color:var(--copper)}
 .field select option{color:#14110F;background:#fff}
 /* carte de visite */
 .card-sec{text-align:center}
@@ -378,13 +388,11 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     <h2 data-i="duo.title"></h2>
     <div class="duo">
       <a class="panel h reveal-mask" href="#catalogue" data-filter-go="homme" data-hover>
-        <svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pd)"/></svg>
-        <span class="tag" data-i="soon"></span>
+        <img class="bg" src="img/azur.webp" alt="" width="928" height="1152" loading="lazy" decoding="async">
         <div><h3 data-i="f.men"></h3><p data-i="men.p"></p><span class="pill ghost" data-i="see"></span></div>
       </a>
       <a class="panel f reveal-mask" href="#catalogue" data-filter-go="femme" data-hover>
-        <svg class="pt" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pl)"/></svg>
-        <span class="tag" data-i="soon"></span>
+        <img class="bg" src="img/jade.webp" alt="" width="928" height="1152" loading="lazy" decoding="async">
         <div><h3 data-i="f.women"></h3><p data-i="women.p"></p><span class="pill ghost" data-i="see"></span></div>
       </a>
     </div>
@@ -511,10 +519,10 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
       'c3.t':'Fier.','c3.p':"Un luxe discret, pensé pour la diaspora africaine. L'audace est dans la forme, jamais dans le bruit.",
       'ch.cta':'Découvrir les collections',
       'duo.eyebrow':'Les collections','duo.title':'Homme & Femme','soon':'Photo à venir',
-      'men.p':'Vestes structurées, costumes, chemises : la coupe avant tout.','women.p':'Robes, manteaux, ensembles : la silhouette, sans compromis.','see':'Voir la sélection',
+      'men.p':'Tuniques, ensembles, pantalons : la coupe avant tout.','women.p':'Ensembles, jupes, vestes : la silhouette, sans compromis.','see':'Voir la sélection',
       'cat.eyebrow':'Catalogue','cat.title':'La sélection','cat.filter':'Filtrer le catalogue',
       'f.all':'Tout','f.men':'Homme','f.women':'Femme',
-      'cat.note':'Exemples de présentation : les noms, les pièces et les visuels sont provisoires, en attente des vraies photos.',
+      'cat.note':'Visuels illustratifs : les noms et la sélection sont provisoires, en attente des photos réelles.',
       'dlg.l1':'Coupe sur mesure','dlg.l2':'Finitions faites à la main','dlg.l3':'Essayage sur rendez-vous','dlg.cta':'Demander un essayage',
       'contact.eyebrow':'Contact','contact.title':'Prendre rendez-vous',
       'contact.lead':'Un essayage, une pièce sur mesure, une question sur une finition : écrivez-nous, nous répondons personnellement.',
@@ -539,10 +547,10 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
       'c3.t':'Proud.','c3.p':'Quiet luxury, made for the African diaspora. The boldness is in the form, never in the noise.',
       'ch.cta':'Discover the collections',
       'duo.eyebrow':'The collections','duo.title':'Men & Women','soon':'Photo coming soon',
-      'men.p':'Structured jackets, suits, shirts: the cut above all.','women.p':'Dresses, coats, sets: the silhouette, without compromise.','see':'View the selection',
+      'men.p':'Tunics, sets, trousers: the cut above all.','women.p':'Sets, skirts, jackets: the silhouette, without compromise.','see':'View the selection',
       'cat.eyebrow':'Catalogue','cat.title':'The selection','cat.filter':'Filter the catalogue',
       'f.all':'All','f.men':'Men','f.women':'Women',
-      'cat.note':'Sample presentation: names, pieces and visuals are placeholders until the real photos arrive.',
+      'cat.note':'Illustrative visuals: names and selection are provisional until the real photos arrive.',
       'dlg.l1':'Made-to-measure cut','dlg.l2':'Hand-finished details','dlg.l3':'Fitting by appointment','dlg.cta':'Request a fitting',
       'contact.eyebrow':'Contact','contact.title':'Book an appointment',
       'contact.lead':'A fitting, a made-to-measure piece, a question about a finish: write to us, we reply personally.',
@@ -556,14 +564,21 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     }
   };
   var items = [
-    {n:'Veste Aube', c:'homme', t:{fr:'Veste',en:'Jacket'}, d:{fr:'Une veste structurée, épaule nette, taille marquée.',en:'A structured jacket, clean shoulder, defined waist.'}},
-    {n:'Costume Horizon', c:'homme', t:{fr:'Costume',en:'Suit'}, d:{fr:'Deux pièces à la ligne droite, doublure finie à la main.',en:'A two-piece with a straight line, hand-finished lining.'}},
-    {n:'Chemise Midi', c:'homme', t:{fr:'Chemise',en:'Shirt'}, d:{fr:'Col travaillé, boutonnières cousues main.',en:'A worked collar, hand-sewn buttonholes.'}},
-    {n:'Pantalon Zénith', c:'homme', t:{fr:'Pantalon',en:'Trousers'}, d:{fr:'Tombé précis, taille haute, ourlet main.',en:'A precise drape, high waist, hand hem.'}},
-    {n:'Robe Lever', c:'femme', t:{fr:'Robe',en:'Dress'}, d:{fr:'Une robe qui suit la silhouette, coupe en biais.',en:'A dress that follows the silhouette, cut on the bias.'}},
-    {n:'Manteau Éclat', c:'femme', t:{fr:'Manteau',en:'Coat'}, d:{fr:'Manteau long, épaules structurées, doublure soie.',en:'A long coat, structured shoulders, silk lining.'}},
-    {n:'Ensemble Rayon', c:'femme', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Veste et jupe assorties, coupe nette.',en:'A matching jacket and skirt, a clean cut.'}},
-    {n:'Jupe Matin', c:'femme', t:{fr:'Jupe',en:'Skirt'}, d:{fr:'Jupe droite, ceinture montée à la main.',en:'A straight skirt, waistband set by hand.'}}
+    {n:'Azur', c:'homme', img:'azur', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Tunique et pantalon bleu roi, col rond, coupe droite et nette.',en:'Royal blue tunic and trousers, round neck, a straight, clean cut.'}},
+    {n:'Nuit', c:'homme', img:'nuit', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Tunique longue anthracite, broderie sur le plastron.',en:'Long charcoal tunic, embroidery down the front.'}},
+    {n:'Brume', c:'homme', img:'brume', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Gris clair et manches turquoise, une ligne verticale franche.',en:'Light grey with turquoise sleeves, a bold vertical line.'}},
+    {n:'Lagune', c:'homme', img:'lagune', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Bleu profond, manches bordeaux, sangle de poitrine.',en:'Deep blue, burgundy sleeves, a chest strap detail.'}},
+    {n:'Ivoire', c:'homme', img:'ivoire', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Crème tonal, patte de boutonnage brodée, poches plaquées.',en:'Tonal cream, embroidered placket, patch pockets.'}},
+    {n:'Safran', c:'homme', img:'safran', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Haut moutarde à poche contrastée, pantalon chocolat.',en:'Mustard top with a contrast pocket, chocolate trousers.'}},
+    {n:'Midi', c:'homme', img:'midi', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Blanc pur, col montant, quatre poches, manches courtes.',en:'Pure white, stand collar, four pockets, short sleeves.'}},
+    {n:'Terre', c:'homme', img:'terre', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Brun à motifs blancs, tunique longue et pantalon assorti.',en:'Brown with white motifs, long tunic and matching trousers.'}},
+    {n:'Soleil', c:'homme', img:'soleil', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Imprimé wax bleu et jaune, haut à manches courtes.',en:'Blue and yellow wax print, short-sleeved top.'}},
+    {n:'Ébène', c:'homme', img:'ebene', t:{fr:'Tunique',en:'Tunic'}, d:{fr:'Noire, empiècement d’épaules clair, pantalon droit.',en:'Black, light shoulder yoke, straight trousers.'}},
+    {n:'Cacao', c:'homme', img:'cacao', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Brun profond, bordures brodées au col, aux poignets et à l’ourlet.',en:'Deep brown, embroidered borders at the neck, cuffs and hem.'}},
+    {n:'Cendre', c:'homme', img:'cendre', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Gris chiné, tunique à poche poitrine, coupe sobre.',en:'Marled grey, tunic with a chest pocket, a sober cut.'}},
+    {n:'Canopée', c:'homme', img:'canopee', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Teinture vert et cuivre, manches courtes, pantalon assorti.',en:'Green and copper dye, short sleeves, matching trousers.'}},
+    {n:'Éclat', c:'femme', img:'eclat', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Caraco ivoire et jupe droite imprimée turquoise.',en:'Ivory cowl top and a straight turquoise-print skirt.'}},
+    {n:'Jade', c:'femme', img:'jade', t:{fr:'Ensemble',en:'Set'}, d:{fr:'Veste croisée ceinturée et pantalon large, imprimé turquoise.',en:'Belted wrap jacket and wide trousers, turquoise print.'}}
   ];
 
   var lang = 'fr', filter = 'all';
@@ -583,7 +598,7 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
   function renderGrid(){
     $('#grid').innerHTML = items.map(function(it,i){
       return '<button class="card '+(it.c==='homme'?'h':'f')+'" data-c="'+it.c+'" data-i="'+i+'" data-hover'+((filter!=='all'&&filter!==it.c)?' hidden':'')+'>' +
-        '<div class="shot"><svg viewBox="-100 -100 200 112" fill="currentColor" aria-hidden="true"><use href="#em"/></svg><span>'+T('soon')+'</span></div>' +
+        '<div class="shot"><img src="img/'+it.img+'.webp" alt="'+it.n+'" width="928" height="1152" loading="lazy" decoding="async"></div>' +
         '<h4>'+it.n+'</h4><small>'+it.t[lang]+' · '+catLabel(it.c)+'</small></button>';
     }).join('');
   }
@@ -641,6 +656,7 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     $('#dlgCat').textContent = it.t[lang]+' · '+catLabel(it.c);
     $('#dlgName').textContent = it.n; $('#dlgText').textContent = it.d[lang];
     $('#dlgShot').className = 'shot '+(it.c==='homme'?'h':'f');
+    $('#dlgShot').innerHTML = '<img src="img/'+it.img+'.webp" alt="'+it.n+'" width="928" height="1152" decoding="async">';
     if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
   });
   $('#dlgClose').addEventListener('click',function(){ dlg.close(); });
