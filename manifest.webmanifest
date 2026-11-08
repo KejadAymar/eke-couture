@@ -1,0 +1,17 @@
+{
+  "name": "EKE-COUTURE",
+  "short_name": "EKE",
+  "description": "Prêt-à-porter de luxe homme et femme. Nos réalisations, vos commandes sur mesure.",
+  "lang": "fr",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14110F",
+  "theme_color": "#14110F",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

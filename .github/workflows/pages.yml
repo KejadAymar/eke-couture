@@ -24,6 +24,7 @@ jobs:
           cp index.html _site/
           cp -r carte _site/carte
           cp -r img _site/img
+          cp manifest.webmanifest sw.js _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

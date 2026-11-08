@@ -28,4 +28,7 @@ GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.9 et three.js 0.160.0 (jsDelivr),
 ## Fonctions
 - Bouton FR / EN (choix mémorisé). Textes dans l'objet `DICT`.
 - Formulaire d'essayage : ouvre WhatsApp avec le message prêt, sans serveur. Rien n'est stocké.
+- Réalisations (anciennement catalogue) : fiche photo entière, zoom plein écran, lien direct par pièce (`?r=nom`).
+- Commande : message WhatsApp structuré (modèle, taille, tissu, date, détails).
+- Raccourci écran d'accueil : `manifest.webmanifest`, `sw.js`, invite d'installation (Android/ordinateur automatique, iPhone avec consigne).
 - Favicon, aperçu de partage (sans image), barre de progression.

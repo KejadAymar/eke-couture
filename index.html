@@ -6,6 +6,12 @@
 <title>EKE-COUTURE | Le jour s'est levé</title>
 <meta name="description" content="EKE-COUTURE, prêt-à-porter de luxe homme et femme. La coupe, les finitions main, l'audace d'être fier.">
 <meta name="theme-color" content="#14110F">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EKE-COUTURE">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:type" content="website">
 <meta property="og:title" content="EKE-COUTURE | Le jour s'est levé">
 <meta property="og:description" content="Prêt-à-porter de luxe homme et femme. La coupe, les finitions main, l'audace d'être fier.">
@@ -52,7 +58,10 @@ h2{font-size:clamp(2rem,5vw,4.2rem);text-transform:uppercase;letter-spacing:.05e
 
 /* scène 3D fixe */
 #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 1s}
-.sky,.night,.sunglow{position:fixed;z-index:0;pointer-events:none;visibility:hidden}
+.sky,.night,.sunglow,.grain{position:fixed;z-index:0;pointer-events:none;visibility:hidden}
+.grain{inset:0;background:url(img/grain.png);opacity:.045}
+body.in-story .grain{visibility:visible}
+body:not(.in-story) .grain{visibility:hidden}
 .sky{inset:0;background:linear-gradient(180deg,#e8d5b2 0%,#f3e5ca 50%,#f8eedb 100%)}
 .night{inset:0;background:linear-gradient(180deg,#2f231a 0%,#8f5f38 24%,#d9a56a 50%,#f2d8aa 78%,#f8eddb 100%);transition:opacity .6s linear;will-change:opacity}
 .sunglow{left:50%;bottom:-22vh;width:120vw;height:78vh;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,236,196,.85),rgba(255,214,150,.3) 55%,transparent 78%);transition:opacity .6s linear;will-change:opacity}
@@ -159,17 +168,50 @@ html.nogl .chap.hero{min-height:100svh}
 .card h4{margin-top:14px;font-size:17px;font-weight:400;letter-spacing:.06em;text-transform:uppercase}
 .card small{display:block;color:var(--mute);font-size:13px;letter-spacing:.08em}
 
-dialog{position:fixed;border:1px solid var(--line);border-radius:20px;background:var(--ink-2);color:var(--ivory);width:min(880px,92vw);padding:0;margin:auto;overflow:hidden}
+dialog{position:fixed;border:1px solid var(--line);border-radius:20px;background:var(--ink-2);color:var(--ivory);width:min(900px,92vw);max-height:92vh;max-height:92dvh;padding:0;margin:auto;overflow:auto;overscroll-behavior:contain}
 dialog::backdrop{background:rgba(8,6,5,.82)}
-.dlg{display:grid;grid-template-columns:1fr 1fr}
-.dlg .shot{border-radius:0;border:0;aspect-ratio:auto;min-height:360px}
+.dlg{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1fr);align-items:stretch}
+.dlg .shot{display:block;width:100%;padding:0;cursor:zoom-in;border-radius:0;border:0;aspect-ratio:928/1152;min-height:0;align-self:start}
+.dlg .shot .zh{position:absolute;right:12px;bottom:12px;left:auto;padding:8px 14px;border-radius:999px;background:rgba(20,17,15,.72);color:var(--ivory);font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:1}
+.dlg-body .ref{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+.dlg-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .dlg-body{padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;gap:14px;justify-content:center}
 .dlg-body h3{font-size:2rem;text-transform:uppercase}
 .dlg-body p{color:var(--mute)}
 .dlg-body ul{list-style:none;color:var(--mute);font-size:15px;border-top:1px solid var(--line)}
 .dlg-body li{padding:10px 0;border-bottom:1px solid var(--line)}
 dialog .close{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:rgba(20,17,15,.6)}
-@media(max-width:700px){.dlg{grid-template-columns:1fr}.dlg .shot{min-height:220px}}
+@media(max-width:700px){
+  dialog#dlg{width:100vw;max-width:100vw;height:100vh;height:100dvh;max-height:100dvh;border:0;border-radius:0}
+  .dlg{grid-template-columns:1fr}
+  .dlg-body{padding:24px 20px calc(36px + env(safe-area-inset-bottom))}
+  dialog#dlg .close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:12px}
+}
+/* plein écran : voir la photo en entier, zoomer, déplacer */
+dialog#lb{width:100vw;max-width:100vw;height:100vh;height:100dvh;max-height:100dvh;border:0;border-radius:0;background:#0b0908;overflow:hidden}
+.lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;touch-action:none;overflow:hidden;cursor:grab;user-select:none;-webkit-user-select:none}
+.lb-stage img{max-width:100%;max-height:100%;width:auto;height:auto;transform-origin:50% 50%;will-change:transform;-webkit-user-drag:none;pointer-events:none}
+.lb-tools{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px;border-radius:999px;background:rgba(20,17,15,.78);border:1px solid var(--line)}
+.lb-tools button{width:44px;height:44px;border-radius:50%;font-size:22px;line-height:1;color:var(--ivory)}
+.lb-tools button:hover{background:rgba(244,238,227,.12)}
+.lb-tools span{font-size:11px;letter-spacing:.14em;color:var(--mute);min-width:44px;text-align:center}
+dialog#lb .close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:3}
+/* invite d'installation */
+#install{position:fixed;z-index:95;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));max-width:480px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center;padding:14px 14px 14px 16px;background:rgba(20,17,15,.97);color:var(--ivory);border:1px solid rgba(185,128,63,.5);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.45);transform:translateY(140%);opacity:0;transition:transform .7s var(--ease),opacity .5s}
+#install.on{transform:none;opacity:1}
+#install[hidden]{display:none}
+#install img{width:44px;height:44px;border-radius:10px}
+#install b{display:block;font-weight:400;font-size:15px;letter-spacing:.04em}
+#install span{display:block;font-size:13px;color:var(--mute);line-height:1.35}
+#install .pill{padding:11px 18px;font-size:12px;grid-column:3}
+#insNo{position:absolute;top:6px;right:8px;width:28px;height:28px;color:var(--mute);font-size:14px}
+#install .acts{display:flex;align-items:center;gap:6px;grid-column:3}
+@media(max-width:420px){#install{grid-template-columns:auto 1fr}#install .acts{grid-column:1/-1;justify-content:flex-end}}
+/* commande : étapes */
+.contact .steps{list-style:none;counter-reset:st;margin:30px 0 0;border:0;display:grid;gap:16px}
+.contact .steps li{display:block;position:relative;padding:0 0 0 46px;border:0;counter-increment:st;color:rgba(20,17,15,.74);font-size:15px;line-height:1.45}
+.contact .steps li::before{content:counter(st);position:absolute;left:0;top:-3px;width:32px;height:32px;border-radius:50%;border:1px solid #B9803F;color:#8a5a22;display:grid;place-items:center;font-size:13px;letter-spacing:0}
+.card .ref{display:block;margin-top:4px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
 
 /* tuiles claires (alternance clair / sombre, comme Apple) */
 .light{background:#F4EEE3;color:var(--ink)}
@@ -301,6 +343,7 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
 <div class="sky" aria-hidden="true"></div>
 <div class="night" aria-hidden="true"></div>
 <div class="sunglow" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="prog" aria-hidden="true"></div>
 <div class="cursor" aria-hidden="true"></div>
@@ -442,11 +485,15 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     <div class="contact-grid">
       <div>
         <p class="lead" data-i="contact.lead"></p>
+        <ol class="steps"><li data-i="st1"></li><li data-i="st2"></li><li data-i="st3"></li><li data-i="st4"></li></ol>
         <ul id="contactList"></ul>
       </div>
       <form id="fit" novalidate>
         <div class="field" id="fName"><label for="name" data-i="form.name"></label><input id="name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="piece" data-i="form.piece"></label><select id="piece" name="piece"></select></div>
+        <div class="field"><label for="size" data-i="form.size"></label><input id="size" name="size" data-ip="form.size.ph" autocomplete="off"></div>
+        <div class="field"><label for="fabric" data-i="form.fabric"></label><input id="fabric" name="fabric" data-ip="form.fabric.ph" autocomplete="off"></div>
+        <div class="field"><label for="when" data-i="form.when"></label><input id="when" name="when" data-ip="form.when.ph" autocomplete="off"></div>
         <div class="field"><label for="msg" data-i="form.msg"></label><textarea id="msg" name="msg" data-ip="form.msg.ph"></textarea></div>
         <fieldset class="field chan"><legend data-i="form.via"></legend>
           <label><input type="radio" name="via" value="wa"> WhatsApp</label>
@@ -467,19 +514,40 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
   </div>
 </footer>
 
-<dialog id="dlg">
+<dialog id="dlg" data-lenis-prevent>
   <button class="close" id="dlgClose" data-ia="aria-label:close">✕</button>
   <div class="dlg">
-    <div class="shot" id="dlgShot"><svg viewBox="-100 -100 200 112" fill="currentColor" aria-hidden="true"><use href="#em"/></svg><span data-i="soon"></span></div>
+    <button class="shot" id="dlgShot" type="button" data-ia="aria-label:dlg.zoom"></button>
     <div class="dlg-body">
       <p class="eyebrow" id="dlgCat"></p>
+      <p class="ref" id="dlgRef"></p>
       <h3 id="dlgName"></h3>
       <p id="dlgText"></p>
       <ul><li data-i="dlg.l1"></li><li data-i="dlg.l2"></li><li data-i="dlg.l3"></li></ul>
-      <a class="pill solid" href="#contact" id="dlgCta" style="align-self:flex-start;margin-top:8px" data-i="dlg.cta"></a>
+      <div class="dlg-act">
+        <a class="pill solid" href="#contact" id="dlgCta" data-i="dlg.cta"></a>
+        <a class="pill ghost" href="#" id="dlgWa" target="_blank" rel="noopener" data-i="dlg.ask"></a>
+      </div>
     </div>
   </div>
 </dialog>
+
+<dialog id="lb" data-lenis-prevent aria-label="Photo">
+  <button class="close" id="lbClose" data-ia="aria-label:close">✕</button>
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt="" draggable="false"></div>
+  <div class="lb-tools" role="group">
+    <button type="button" id="lbOut" aria-label="−">−</button>
+    <span id="lbZ">100%</span>
+    <button type="button" id="lbIn" aria-label="+">+</button>
+  </div>
+</dialog>
+
+<aside id="install" hidden role="dialog" aria-label="EKE-COUTURE">
+  <img src="img/icon-192.png" alt="" width="44" height="44">
+  <div><b data-i="ins.t"></b><span id="insTxt"></span></div>
+  <div class="acts"><button class="pill solid" type="button" id="insYes"></button></div>
+  <button type="button" id="insNo" data-ia="aria-label:close">✕</button>
+</aside>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -508,58 +576,68 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
   var DICT = {
     fr:{
       'nav.aria':'Navigation principale','menu.open':'Ouvrir le menu','close':'Fermer',
-      'nav.brand':'La marque','nav.duo':'Homme & Femme','nav.cat':'Catalogue','nav.contact':'Contact','nav.card':'Carte','cta.fit':'Essayage',
+      'nav.brand':'La marque','nav.duo':'Homme & Femme','nav.cat':'Réalisations','nav.contact':'Commande','nav.card':'Carte','cta.fit':'Commander',
       'card.eyebrow':'La carte','card.title':'Ma carte de visite','card.lead':'Touchez la carte pour la retourner. Gardez-la, ou ajoutez le contact à votre téléphone.','card.flip':'Retourner la carte de visite','card.see':'Retourner la carte','card.dl':'Télécharger la carte','card.vcf':'Ajouter aux contacts',
-      'hero.tag':"Le jour s'est levé",'hero.cat':'Voir le catalogue','hero.house':'La maison','scroll':'Défiler',
+      'hero.tag':"Le jour s'est levé",'hero.cat':'Voir nos réalisations','hero.house':'La maison','scroll':'Défiler',
       'man.eyebrow':'Le nom',
       'man.text':"EKE est d'abord un nom de famille. Il veut dire : le jour s'est levé. Nous en avons fait une maison de couture.",
       'c1.t':'La coupe.','c1.p':"Une ligne construite sur le corps, pas sur le cintre. C'est elle qui fait la signature d'EKE.",
       'turn':"Tournez l'emblème de 90° : vous lisez E, K, E.",
-      'c2.t':'Fait main.','c2.p':"Ourlets, boutonnières, doublures : ce qu'on ne voit pas d'abord, et qu'on remarque ensuite.",
+      'c2.t':'Fait main.','c2.p':"Ourlets, boutonnières, doublures, finitions : ce qu'on ne voit pas d'abord, et qu'on remarque ensuite.",
       'c3.t':'Fier.','c3.p':"Un luxe discret, pensé pour la diaspora africaine. L'audace est dans la forme, jamais dans le bruit.",
       'ch.cta':'Découvrir les collections',
       'duo.eyebrow':'Les collections','duo.title':'Homme & Femme','soon':'Photo à venir',
       'men.p':'Tuniques, ensembles, pantalons : la coupe avant tout.','women.p':'Ensembles, jupes, vestes : la silhouette, sans compromis.','see':'Voir la sélection',
-      'cat.eyebrow':'Catalogue','cat.title':'La sélection','cat.filter':'Filtrer le catalogue',
+      'cat.eyebrow':'Réalisations','cat.title':'Nos réalisations','cat.filter':'Filtrer les réalisations',
       'f.all':'Tout','f.men':'Homme','f.women':'Femme',
-      'cat.note':'Visuels illustratifs : les noms et la sélection sont provisoires, en attente des photos réelles.',
-      'dlg.l1':'Coupe sur mesure','dlg.l2':'Finitions faites à la main','dlg.l3':'Essayage sur rendez-vous','dlg.cta':'Demander un essayage',
-      'contact.eyebrow':'Contact','contact.title':'Prendre rendez-vous',
-      'contact.lead':'Un essayage, une pièce sur mesure, une question sur une finition : écrivez-nous, nous répondons personnellement.',
+      'cat.note':'Chaque pièce est confectionnée sur mesure. Un modèle vous plaît : commandez-le. Une autre idée : décrivez-la, nous la réalisons. (Visuels illustratifs.)',
+      'dlg.l1':'Coupe sur mesure','dlg.l2':'Finitions faites à la main','dlg.l3':'Commande et suivi sur WhatsApp','dlg.cta':'Commander ce modèle','dlg.ask':'Poser une question','dlg.zoom':'Agrandir la photo','dlg.zh':'Agrandir',
+      'ref':'Réf.',
+      'contact.eyebrow':'Commande','contact.title':'Passer commande',
+      'contact.lead':'Un modèle de nos réalisations ou votre propre idée : écrivez-nous, nous répondons personnellement sur WhatsApp.',
+      'st1':'Choisissez un modèle, ou décrivez le vôtre.','st2':'Précisez la taille, le tissu et la date : le message se prépare tout seul.','st3':"Il arrive sur WhatsApp : ajoutez une photo d'inspiration ou vos mesures.",'st4':'Nous confirmons le prix, le délai et l’essayage.',
+      'ins.t':'Installer EKE-COUTURE','ins.p':"Ajoutez la maison à votre écran d'accueil pour commander plus vite.",'ins.ios':'Touchez le bouton Partager, puis « Sur l’écran d’accueil ».','ins.yes':'Installer','ins.ok':'Compris',
       'lbl.email':'E-mail','lbl.atelier':'Atelier','lbl.phone':'Téléphone','soonIg':'Bientôt',
-      'form.name':'Votre nom','form.piece':'Pièce souhaitée','form.msg':'Message','form.msg.ph':'Taille, occasion, date souhaitée…','form.via':'Répondre par','form.send':'Envoyer la demande',
-      'form.other':'Autre / je ne sais pas encore',
+      'form.name':'Votre nom','form.piece':'Modèle souhaité','form.msg':'Détails de la commande','form.msg.ph':'Modifications voulues, occasion, précisions…','form.via':'Répondre par','form.send':'Envoyer ma commande',
+      'form.size':'Taille ou mesures','form.size.ph':'M, L, 42… ou sur mesure','form.fabric':'Tissu / couleur','form.fabric.ph':'Comme le modèle, ou précisez','form.when':'Date souhaitée','form.when.ph':'Mariage, fête, fin du mois…',
+      'form.other':"Ma propre idée (photo d'inspiration à suivre)",
+      'o.hello':'Bonjour EKE-COUTURE,','o.intro':'Je souhaite passer une commande.','o.model':'Modèle','o.link':'Lien','o.name':'Nom','o.size':'Taille / mesures','o.fabric':'Tissu / couleur','o.date':'Date souhaitée','o.details':'Détails','o.custom':"création sur mesure (je vous envoie une photo d'inspiration)",'o.q':'Bonjour EKE-COUTURE, j’ai une question sur la pièce',
       's.name':'Merci de renseigner votre nom.','s.none':"Les coordonnées de la marque ne sont pas encore renseignées : le formulaire ne peut pas partir pour l'instant.",
       's.via':'Choisissez un moyen de réponse.','s.ok':"Votre application s'ouvre avec le message prêt à envoyer.",
-      'msg.hello':'Bonjour EKE-COUTURE, je suis','msg.piece':'Pièce souhaitée','msg.sub':"Demande d'essayage",
+      'msg.hello':'Bonjour EKE-COUTURE, je suis','msg.piece':'Pièce souhaitée','msg.sub':'Commande',
       'foot.rights':'© 2026 EKE-COUTURE. Tous droits réservés.'
     },
     en:{
       'nav.aria':'Main navigation','menu.open':'Open menu','close':'Close',
-      'nav.brand':'The house','nav.duo':'Men & Women','nav.cat':'Catalogue','nav.contact':'Contact','nav.card':'Card','cta.fit':'Fitting',
+      'nav.brand':'The house','nav.duo':'Men & Women','nav.cat':'Our work','nav.contact':'Order','nav.card':'Card','cta.fit':'Order',
       'card.eyebrow':'The card','card.title':'My business card','card.lead':'Tap the card to flip it. Keep it, or add the contact to your phone.','card.flip':'Flip the business card','card.see':'Flip the card','card.dl':'Download the card','card.vcf':'Add to contacts',
-      'hero.tag':'The day has risen','hero.cat':'View the catalogue','hero.house':'The house','scroll':'Scroll',
+      'hero.tag':'The day has risen','hero.cat':'View our work','hero.house':'The house','scroll':'Scroll',
       'man.eyebrow':'The name',
       'man.text':'EKE is first of all a family name. It means: the day has risen. We turned it into a couture house.',
       'c1.t':'The cut.','c1.p':"A line built on the body, not on the hanger. It is EKE's signature.",
       'turn':'Turn the emblem 90°: you read E, K, E.',
-      'c2.t':'Hand-made.','c2.p':"Hems, buttonholes, linings: what you don't see first, and notice next.",
+      'c2.t':'Hand-made.','c2.p':"Hems, buttonholes, linings, finishing: what you don't see first, and notice next.",
       'c3.t':'Proud.','c3.p':'Quiet luxury, made for the African diaspora. The boldness is in the form, never in the noise.',
       'ch.cta':'Discover the collections',
       'duo.eyebrow':'The collections','duo.title':'Men & Women','soon':'Photo coming soon',
       'men.p':'Tunics, sets, trousers: the cut above all.','women.p':'Sets, skirts, jackets: the silhouette, without compromise.','see':'View the selection',
-      'cat.eyebrow':'Catalogue','cat.title':'The selection','cat.filter':'Filter the catalogue',
+      'cat.eyebrow':'Our work','cat.title':'Our creations','cat.filter':'Filter our work',
       'f.all':'All','f.men':'Men','f.women':'Women',
-      'cat.note':'Illustrative visuals: names and selection are provisional until the real photos arrive.',
-      'dlg.l1':'Made-to-measure cut','dlg.l2':'Hand-finished details','dlg.l3':'Fitting by appointment','dlg.cta':'Request a fitting',
-      'contact.eyebrow':'Contact','contact.title':'Book an appointment',
-      'contact.lead':'A fitting, a made-to-measure piece, a question about a finish: write to us, we reply personally.',
+      'cat.note':'Every piece is made to measure. Like a model: order it. Another idea: describe it, we will make it. (Illustrative visuals.)',
+      'dlg.l1':'Made-to-measure cut','dlg.l2':'Hand-finished details','dlg.l3':'Order and follow-up on WhatsApp','dlg.cta':'Order this piece','dlg.ask':'Ask a question','dlg.zoom':'Enlarge the photo','dlg.zh':'Enlarge',
+      'ref':'Ref.',
+      'contact.eyebrow':'Order','contact.title':'Place an order',
+      'contact.lead':'A model from our work or your own idea: write to us, we reply personally on WhatsApp.',
+      'st1':'Choose a model, or describe your own.','st2':'Add the size, fabric and date: the message writes itself.','st3':'It arrives on WhatsApp: add an inspiration photo or your measurements.','st4':'We confirm the price, the lead time and the fitting.',
+      'ins.t':'Install EKE-COUTURE','ins.p':'Add the house to your home screen to order faster.','ins.ios':'Tap the Share button, then “Add to Home Screen”.','ins.yes':'Install','ins.ok':'Got it',
       'lbl.email':'Email','lbl.atelier':'Atelier','lbl.phone':'Phone','soonIg':'Soon',
-      'form.name':'Your name','form.piece':'Piece of interest','form.msg':'Message','form.msg.ph':'Size, occasion, preferred date…','form.via':'Reply by','form.send':'Send the request',
-      'form.other':'Other / not sure yet',
+      'form.name':'Your name','form.piece':'Model you want','form.msg':'Order details','form.msg.ph':'Changes you want, occasion, details…','form.via':'Reply by','form.send':'Send my order',
+      'form.size':'Size or measurements','form.size.ph':'M, L, 42… or made to measure','form.fabric':'Fabric / colour','form.fabric.ph':'Same as the model, or specify','form.when':'Preferred date','form.when.ph':'Wedding, party, end of the month…',
+      'form.other':'My own idea (inspiration photo to follow)',
+      'o.hello':'Hello EKE-COUTURE,','o.intro':'I would like to place an order.','o.model':'Model','o.link':'Link','o.name':'Name','o.size':'Size / measurements','o.fabric':'Fabric / colour','o.date':'Preferred date','o.details':'Details','o.custom':'made-to-measure creation (I will send an inspiration photo)','o.q':'Hello EKE-COUTURE, I have a question about the piece',
       's.name':'Please enter your name.','s.none':"The brand's contact details are not set yet: the form cannot be sent for now.",
       's.via':'Choose a way to reply.','s.ok':'Your app is opening with the message ready to send.',
-      'msg.hello':'Hello EKE-COUTURE, my name is','msg.piece':'Piece of interest','msg.sub':'Fitting request',
+      'msg.hello':'Hello EKE-COUTURE, my name is','msg.piece':'Piece of interest','msg.sub':'Order',
       'foot.rights':'© 2026 EKE-COUTURE. All rights reserved.'
     }
   };
@@ -595,11 +673,13 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
       manTween = gsap.to('#manifesto .w',{opacity:1,stagger:.1,ease:'none',scrollTrigger:{trigger:'#manifesto',start:'top 75%',end:'bottom 45%',scrub:true}});
     } else { $$('#manifesto .w').forEach(function(w){ w.style.opacity=1; }); }
   }
+  function refOf(i){ return 'EKE-' + ('0'+(i+1)).slice(-2); }
+  function pieceUrl(it){ return location.origin + location.pathname.replace(/index\.html$/,'') + '?r=' + it.img + '#catalogue'; }
   function renderGrid(){
     $('#grid').innerHTML = items.map(function(it,i){
       return '<button class="card '+(it.c==='homme'?'h':'f')+'" data-c="'+it.c+'" data-i="'+i+'" data-hover'+((filter!=='all'&&filter!==it.c)?' hidden':'')+'>' +
         '<div class="shot"><img src="img/'+it.img+'.webp" alt="'+it.n+'" width="928" height="1152" loading="lazy" decoding="async"></div>' +
-        '<h4>'+it.n+'</h4><small>'+it.t[lang]+' · '+catLabel(it.c)+'</small></button>';
+        '<h4>'+it.n+'</h4><small>'+it.t[lang]+' · '+catLabel(it.c)+'</small><span class="ref">'+T('ref')+' '+refOf(i)+'</span></button>';
     }).join('');
   }
   function renderPieces(){
@@ -628,7 +708,7 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     $$('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang===lang)); });
     $$('.filters button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.f===filter)); });
     document.title = 'EKE-COUTURE | ' + T('hero.tag');
-    renderGrid(); renderPieces(); renderContact(); buildManifesto();
+    renderGrid(); renderPieces(); renderContact(); buildManifesto(); if(window.updateInstall) window.updateInstall();
     $('#status').textContent=''; $('#status').className='status';
   }
   $$('.lang button').forEach(function(b){
@@ -650,18 +730,82 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
   $$('[data-filter-go]').forEach(function(a){ a.addEventListener('click',function(){ setFilter(a.dataset.filterGo); }); });
 
   var dlg = $('#dlg'), current = null;
+  function waLink(text){ return 'https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(text); }
+  function openPiece(i){
+    current = i; var it = items[i];
+    $('#dlgCat').textContent = it.t[lang]+' · '+catLabel(it.c);
+    $('#dlgRef').textContent = T('ref')+' '+refOf(i);
+    $('#dlgName').textContent = it.n; $('#dlgText').textContent = it.d[lang];
+    $('#dlgShot').innerHTML = '<img src="img/'+it.img+'.webp" alt="'+it.n+'" width="928" height="1152" decoding="async"><span class="zh">'+T('dlg.zh')+'</span>';
+    var wa = $('#dlgWa'); wa.hidden = !CONFIG.whatsapp;
+    wa.href = CONFIG.whatsapp ? waLink(T('o.q')+' '+it.n+' ('+T('ref')+' '+refOf(i)+') : '+pieceUrl(it)) : '#';
+    dlg.scrollTop = 0;
+    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+  }
   $('#grid').addEventListener('click',function(e){
     var card = e.target.closest('.card'); if(!card) return;
-    current = +card.dataset.i; var it = items[current];
-    $('#dlgCat').textContent = it.t[lang]+' · '+catLabel(it.c);
-    $('#dlgName').textContent = it.n; $('#dlgText').textContent = it.d[lang];
-    $('#dlgShot').className = 'shot '+(it.c==='homme'?'h':'f');
-    $('#dlgShot').innerHTML = '<img src="img/'+it.img+'.webp" alt="'+it.n+'" width="928" height="1152" decoding="async">';
-    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+    openPiece(+card.dataset.i);
   });
   $('#dlgClose').addEventListener('click',function(){ dlg.close(); });
   dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
   $('#dlgCta').addEventListener('click',function(){ if(current!==null) $('#piece').value = String(current); dlg.close(); });
+  /* lien direct vers une pièce : ?r=terre */
+  try{
+    var rq = new URLSearchParams(location.search).get('r');
+    if(rq){ var ri = items.findIndex(function(x){ return x.img===rq; }); if(ri>=0) window.addEventListener('load',function(){ setTimeout(function(){ openPiece(ri); },600); }); }
+  }catch(e){}
+
+  /* ===== plein écran : photo entière, pincer pour zoomer, glisser pour se déplacer ===== */
+  var lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage'), lbZ = $('#lbZ');
+  var Z = { s:1, x:0, y:0 }, pts = {}, pinch = null, lastTap = 0, tapMoved = false, MAXZ = 5;
+  function clampZ(){
+    var w = lbImg.clientWidth*Z.s, h = lbImg.clientHeight*Z.s;
+    var mx = Math.max(0,(w-stage.clientWidth)/2), my = Math.max(0,(h-stage.clientHeight)/2);
+    Z.x = Math.max(-mx, Math.min(mx, Z.x)); Z.y = Math.max(-my, Math.min(my, Z.y));
+  }
+  function applyZ(){ clampZ(); lbImg.style.transform = 'translate('+Z.x.toFixed(1)+'px,'+Z.y.toFixed(1)+'px) scale('+Z.s.toFixed(3)+')'; lbZ.textContent = Math.round(Z.s*100)+'%'; stage.style.cursor = Z.s>1 ? 'grab' : 'zoom-in'; }
+  function zoomAt(ns, cx, cy){   /* cx, cy : point fixe, en pixels depuis le centre de la scène */
+    ns = Math.max(1, Math.min(MAXZ, ns)); var k = ns/Z.s;
+    Z.x = cx - (cx - Z.x)*k; Z.y = cy - (cy - Z.y)*k; Z.s = ns; if(ns===1){ Z.x = 0; Z.y = 0; } applyZ();
+  }
+  function rel(e){ var r = stage.getBoundingClientRect(); return { x:e.clientX - r.left - r.width/2, y:e.clientY - r.top - r.height/2 }; }
+  function openLb(){
+    lbImg.src = 'img/'+items[current].img+'.webp'; lbImg.alt = items[current].n;
+    Z.s = 1; Z.x = 0; Z.y = 0; applyZ();
+    if(lb.showModal) lb.showModal(); else lb.setAttribute('open','');
+  }
+  $('#dlgShot').addEventListener('click', openLb);
+  $('#lbClose').addEventListener('click', function(){ lb.close(); });
+  $('#lbIn').addEventListener('click', function(){ zoomAt(Z.s*1.5, 0, 0); });
+  $('#lbOut').addEventListener('click', function(){ zoomAt(Z.s/1.5, 0, 0); });
+  stage.addEventListener('wheel', function(e){ e.preventDefault(); var p = rel(e); zoomAt(Z.s*Math.exp(-e.deltaY*0.0022), p.x, p.y); }, { passive:false });
+  stage.addEventListener('pointerdown', function(e){
+    stage.setPointerCapture(e.pointerId); pts[e.pointerId] = { x:e.clientX, y:e.clientY }; tapMoved = false;
+    var ids = Object.keys(pts);
+    if(ids.length===2){ var a = pts[ids[0]], b = pts[ids[1]]; pinch = { d:Math.hypot(a.x-b.x,a.y-b.y), s:Z.s }; }
+  });
+  stage.addEventListener('pointermove', function(e){
+    var p = pts[e.pointerId]; if(!p) return;
+    var ids = Object.keys(pts);
+    if(ids.length===2 && pinch){
+      pts[e.pointerId] = { x:e.clientX, y:e.clientY };
+      var a = pts[ids[0]], b = pts[ids[1]], d = Math.hypot(a.x-b.x,a.y-b.y), r = stage.getBoundingClientRect();
+      zoomAt(pinch.s*d/pinch.d, (a.x+b.x)/2 - r.left - r.width/2, (a.y+b.y)/2 - r.top - r.height/2); tapMoved = true; return;
+    }
+    var dx = e.clientX - p.x, dy = e.clientY - p.y;
+    if(Math.abs(dx)+Math.abs(dy) > 2) tapMoved = true;
+    pts[e.pointerId] = { x:e.clientX, y:e.clientY };
+    if(Z.s>1){ Z.x += dx; Z.y += dy; applyZ(); }
+  });
+  function endPtr(e){
+    var was = pts[e.pointerId]; delete pts[e.pointerId]; if(Object.keys(pts).length<2) pinch = null;
+    if(was && !tapMoved && e.type==='pointerup'){        /* double tap : zoom 2,5x ou retour */
+      var now = Date.now();
+      if(now - lastTap < 320){ var p = rel(e); zoomAt(Z.s>1.05 ? 1 : 2.5, p.x, p.y); lastTap = 0; } else lastTap = now;
+    }
+  }
+  stage.addEventListener('pointerup', endPtr); stage.addEventListener('pointercancel', endPtr);
+  window.addEventListener('resize', function(){ if(lb.open) applyZ(); });
 
   /* carte de visite : retourner, télécharger (PNG), ajouter aux contacts (vCard) */
   var bcard = $('#bcard');
@@ -693,12 +837,49 @@ body.in-story header.solid .menu-btn span{background:var(--ink)}
     if(!CONFIG.whatsapp && !CONFIG.email){ status.textContent = T('s.none'); return; }
     var via = ($('input[name=via]:checked')||{}).value;
     if(!via){ status.textContent = T('s.via'); return; }
-    var sel = $('#piece'), pieceName = sel.value==='other' ? T('form.other') : items[+sel.value].n;
-    var body = T('msg.hello')+' '+name+'.\n'+T('msg.piece')+' : '+pieceName+'.\n'+($('#msg').value.trim());
+    var sel = $('#piece'), it = sel.value==='other' ? null : items[+sel.value];
+    var rows = [
+      [T('o.model'), it ? it.n+' ('+T('ref')+' '+refOf(+sel.value)+')' : T('o.custom')],
+      it ? [T('o.link'), pieceUrl(it)] : null,
+      [T('o.name'), name],
+      [T('o.size'), $('#size').value.trim()],
+      [T('o.fabric'), $('#fabric').value.trim()],
+      [T('o.date'), $('#when').value.trim()],
+      [T('o.details'), $('#msg').value.trim()]
+    ].filter(function(r){ return r && r[1]; });
+    var body = T('o.hello')+'\n'+T('o.intro')+'\n\n'+rows.map(function(r){ return '• '+r[0]+' : '+r[1]; }).join('\n');
     if(via==='wa'){ window.open('https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(body),'_blank','noopener'); }
     else { location.href = 'mailto:'+CONFIG.email+'?subject='+encodeURIComponent(T('msg.sub')+' - '+name)+'&body='+encodeURIComponent(body); }
     status.textContent = T('s.ok'); status.className = 'status ok';
   });
+
+  /* ===== raccourci sur l'écran d'accueil (installation) ===== */
+  (function(){
+    var box = $('#install'), txt = $('#insTxt'), yes = $('#insYes'), deferred = null, timer = null, shown = false;
+    var standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    var ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+    var iosSafari = ios && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+    function dismissed(){ try{ var t = +localStorage.getItem('eke-install'); return !!t && Date.now()-t < 14*864e5; }catch(e){ return false; } }
+    function remember(){ try{ localStorage.setItem('eke-install', String(Date.now())); }catch(e){} }
+    window.updateInstall = function(){ txt.textContent = deferred ? T('ins.p') : T('ins.ios'); yes.textContent = deferred ? T('ins.yes') : T('ins.ok'); };
+    function show(){
+      if(shown || standalone || dismissed() || !(deferred || iosSafari)) return;
+      shown = true; window.updateInstall(); box.hidden = false; requestAnimationFrame(function(){ box.classList.add('on'); });
+    }
+    function hide(){ box.classList.remove('on'); setTimeout(function(){ box.hidden = true; }, 700); }
+    function schedule(){ if(!timer && !standalone && !dismissed()) timer = setTimeout(show, 6000); }
+    window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; schedule(); });
+    window.addEventListener('appinstalled', function(){ remember(); hide(); });
+    if(iosSafari) schedule();
+    yes.addEventListener('click', function(){
+      if(deferred){ var d = deferred; deferred = null; d.prompt(); d.userChoice.then(function(){ remember(); hide(); }); }
+      else { remember(); hide(); }
+    });
+    $('#insNo').addEventListener('click', function(){ remember(); hide(); });
+    if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
+      window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+    }
+  })();
 
   var nav = $('#nav'), mb = $('#menuBtn');
   mb.addEventListener('click',function(){ var o = nav.classList.toggle('open'); mb.setAttribute('aria-expanded', String(o)); });
@@ -822,7 +1003,11 @@ try{
 
   const canvas = document.getElementById('gl');
   const lowEnd = (navigator.hardwareConcurrency || 4) <= 4 || innerWidth < 860;
-  let hi = lowEnd ? 1 : Math.min(devicePixelRatio, 1.5), lo = Math.max(0.65, hi*0.75), cur = lo;
+  /* netteté : à l'arrêt l'image est rendue en très haute définition (jusqu'à ~4K, sur-échantillonnée) ;
+     pendant le mouvement on baisse un peu la résolution pour rester fluide */
+  const dpr = Math.max(1, devicePixelRatio || 1);
+  const hiMax = () => Math.max(1, Math.min(dpr * (innerWidth < 860 ? 1 : 1.6), 3, Math.sqrt(8.3e6 / Math.max(1, innerWidth * innerHeight))));
+  let hi = hiMax(), lo = Math.min(dpr, lowEnd ? 1 : 1.5), cur = lo;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha:true, powerPreference:'high-performance' });
   renderer.setPixelRatio(cur);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -861,7 +1046,7 @@ try{
   }
   ray([[0,0],[8,0],[64,96],[56,96]]);
   ray([[0,0],[-8,0],[-64,96],[-56,96]]);
-  parts.sun = new THREE.Mesh(new THREE.SphereGeometry(24, 40, 28), sunMat);
+  parts.sun = new THREE.Mesh(new THREE.SphereGeometry(24, 128, 72), sunMat);
   parts.sun.position.set(0, 56, 0); inner.add(parts.sun);
 
   const dust = { rotation:{y:0}, position:{y:0}, material:{opacity:0} };
@@ -882,7 +1067,7 @@ try{
   let W=1, H=1, baseDist=16, visH=8, visW=12, last='';
   function resize(){
     W = innerWidth; H = innerHeight;
-    renderer.setSize(W, H, false);
+    hi = hiMax(); renderer.setSize(W, H, false);
     camera.aspect = W/H; camera.updateProjectionMatrix();
     const t = Math.tan(camera.fov*Math.PI/360), frac = camera.aspect < 1 ? 0.84 : 0.5;
     baseDist = (7.68/frac)/(2*t*camera.aspect);
@@ -924,7 +1109,7 @@ try{
       if(dt < 120){ frames++; if(dt > 28) slow++; }
       if(frames >= 40){
         if(slow > 14){
-          if(hi > 0.7){ hi = Math.max(0.7, hi*0.85); lo = Math.max(0.5, lo*0.85); bad = 0; }
+          if(lo > 0.62){ lo = Math.max(0.6, lo*0.85); bad = 0; }   /* on ne baisse que la résolution en mouvement, jamais l'image à l'arrêt */
           else if(++bad >= 2){ stop3D(); return; }   /* appareil trop faible : on bascule en 2D */
         } else bad = 0;
         frames = 0; slow = 0;
